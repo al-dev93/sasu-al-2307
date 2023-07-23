@@ -1,0 +1,24 @@
+.tagWrapper {
+  background-color: var(--primary-color);
+}
+
+.tagBody {
+  display: flex;
+  align-items: center;
+}
+
+.bulletedTag {
+  width: 154px;
+  padding: 2px 0;
+  gap: 5px;
+}
+
+.unbulletedTag {
+  padding: 5px 8px;
+}
+
+.tagName {
+  font-family: var(--font-accessories);
+  font-weight: 500;
+  color: var(--rich-black);
+}

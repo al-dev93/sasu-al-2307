@@ -1,10 +1,39 @@
-.description-text {
-  font-size: var(--fs-xs);
+.App {
+  position: relative;
+  width: 100%;
+  background-color: var(--white);
+}
+
+.hero-section {
+  padding-top: 254px;
+}
+
+.app-section {
+  height: auto;
+  min-height: 100vh;
+}
+
+.body-section {
+  padding-bottom: 50px;
+}
+
+.description {
+  color: var(--tertiary-color);
+}
+
+.hero-section .description {
+  padding-top: 20px;
+}
+
+.app-section .description {
+  margin-bottom: 10px;
 }
 
 .tag-name {
   font-family: var(--font-accessories);
+  font-size: var(--fs-xxs);
   font-weight: 500;
+  color: var(--rich-black);
 }
 
 .welcome,
@@ -14,9 +43,22 @@
 
 .welcome {
   line-height: var(--lh-titration);
+  color: var(--secondary-color);
+  padding-bottom: 30px;
 }
 
 .slogan {
   font-size: var(--fs-xl);
   line-height: var(--lh-small);
+  padding-top: 5px;
+  color: var(--secondary-color);
+}
+
+.skill-table {
+  width: max-content;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 20px;
+  padding: 10px 30px;
+  background-color: var(--element-bg);
 }

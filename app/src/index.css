@@ -34,21 +34,41 @@
   --decorative-dark: rgba(0, 53, 84, 0.85);
   --element-bg: rgba(5, 130, 202, 0.07);
   --element-bg-hovered: rgba(5, 130, 202, 0.22);
-  --button-bg: #00000033;
+  --button-bg: rgba(0, 0, 0, 0.2);
+  --button-gradient: linear-gradient(rgba(0, 53, 84, 0), rgba(0, 53, 84, 1));
   --dark-primary: #ccd6f6;
   --dark-secondary: #8892b0;
   --ligth-bg-menu: rgba(255, 255, 255, 0.93);
 }
 
+html {
+  width: 100%;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: red;
+  scroll-behavior: smooth;
+}
+
+*,
+::after,
+::before {
+  box-sizing: inherit;
+}
+
 body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
   margin: 0;
   font-family: var(--font-regular);
   font-size: var(--fs-sm);
   line-height: var(--lh-textual);
   font-weight: normal;
 }
+
 h1,
 h2 {
+  margin: 0;
   font-family: var(--font-titration);
   line-height: var(--lh-titration);
   font-weight: 500;
@@ -60,12 +80,28 @@ h1 {
 
 h2 {
   font-size: var(--fs-lg);
+  color: var(--secondary-color);
 }
 
 h3 {
   font-size: var(--fs-md);
   line-height: var(--lh-titration);
   font-weight: 600;
+}
+
+main {
+  width: 100%;
+  max-width: 1600px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 150px;
+  background-color: transparent;
+}
+
+section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 100px 0 54px;
 }
 
 button,
@@ -75,8 +111,15 @@ label {
 }
 
 button {
+  width: 150px;
+  padding: 12px;
+  border: 1px solid;
+  border-color: var(--tertiary-color);
+  border-radius: 8px;
   line-height: var(--lh-regular);
   font-weight: bold;
+  background: var(--button-bg) var(--button-gradient);
+  color: var(--white);
 }
 
 label {
@@ -84,6 +127,15 @@ label {
   font-weight: 500;
 }
 
+ul {
+  margin: 0;
+}
+
 li {
+  list-style: none;
   font-size: var(--fs-xxs);
+}
+
+p {
+  margin: 0;
 }
