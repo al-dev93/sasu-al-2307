@@ -2,8 +2,8 @@ import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import SectionTitle from './components/SectionTitle';
+import SkillsList from './components/SkillsList';
 import skillsData from './utils/skillsData';
-import Tag from './components/Tag';
 
 function App() {
   return (
@@ -26,6 +26,7 @@ function App() {
         <section className='app-section'>
           <div className='body-section'>
             <SectionTitle title='Compétences' />
+
             <p className='description'>
               Développeur concepteur de logiciel, j’ai choisi de déployer mon activité en l’adossant
               à une société unipersonnelle: Sasu.
@@ -58,18 +59,19 @@ function App() {
               </b>
             </p>
 
-            <ul className='skill-table'>
-              {skillsData.script.map((value, index) => (
-                <li key={`${index + 1}-${value}`}>
-                  <Tag tag={value} bulleted />
-                </li>
-              ))}
-              {skillsData.style.map((value, index) => (
-                <li key={`${index + 1}-${value}`}>
-                  <Tag tag={value} bulleted />
-                </li>
-              ))}
-            </ul>
+            <SkillsList list={[...skillsData.script, ...skillsData.style]} type='table' />
+          </div>
+          <button type='button'>Contact</button>
+        </section>
+        <section className='app-section'>
+          <div className='body-section'>
+            <SectionTitle title='Principales réalisations' />
+          </div>
+          <button type='button'>Contact</button>
+        </section>
+        <section className='app-section'>
+          <div className='body-section'>
+            <SectionTitle title='Autres réalisations' />
           </div>
           <button type='button'>Contact</button>
         </section>

@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.module.css';
-import bullet from '../../assets/arrow_right_outline_secondary_color.svg';
+import bullet from '../../assets/icons/arrow_right_outline_secondary_color.svg';
 
 type TagProps = {
   tag: string;
@@ -8,7 +8,7 @@ type TagProps = {
   filled?: boolean;
 };
 
-function Tag({ tag, bulleted = false, filled = false }: TagProps) {
+function Tag({ tag, bulleted = false, filled = false }: TagProps): JSX.Element {
   return (
     <div className={filled ? style.tagWrapper : undefined}>
       <div className={`${style.tagBody} ${bulleted ? style.bulletedTag : style.unbulletedTag}`}>

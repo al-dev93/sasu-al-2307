@@ -53,12 +53,3 @@
   padding-top: 5px;
   color: var(--secondary-color);
 }
-
-.skill-table {
-  width: max-content;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 20px;
-  padding: 10px 30px;
-  background-color: var(--element-bg);
-}
