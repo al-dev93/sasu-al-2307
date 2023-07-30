@@ -1,0 +1,22 @@
+.slideshowDots {
+  width: fit-content;
+  margin: 15px auto;
+  padding: 6px 0;
+  display: flex;
+  gap: 7px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.notOnScreen {
+  background-color: var(--decorative-light);
+}
+
+.onScreen {
+  background-color: var(--decorative-dark);
+}

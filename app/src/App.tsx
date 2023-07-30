@@ -4,6 +4,7 @@ import './App.css';
 import SectionTitle from './components/SectionTitle';
 import SkillsList from './components/SkillsList';
 import skillsData from './utils/skillsData';
+import Carousel from './components/Carousel';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
           </div>
           <button type='button'>Contact</button>
         </section>
+
+        {/* skills section */}
         <section className='app-section'>
           <div className='body-section'>
             <SectionTitle title='Compétences' />
@@ -63,12 +66,17 @@ function App() {
           </div>
           <button type='button'>Contact</button>
         </section>
+
+        {/* key projects section */}
         <section className='app-section'>
           <div className='body-section'>
             <SectionTitle title='Principales réalisations' />
+            <Carousel />
           </div>
           <button type='button'>Contact</button>
         </section>
+
+        {/* other projects section */}
         <section className='app-section'>
           <div className='body-section'>
             <SectionTitle title='Autres réalisations' />

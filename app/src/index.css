@@ -84,9 +84,11 @@ h2 {
 }
 
 h3 {
+  margin: 0;
   font-size: var(--fs-md);
   line-height: var(--lh-titration);
   font-weight: 600;
+  color: var(--tertiary-color);
 }
 
 main {
