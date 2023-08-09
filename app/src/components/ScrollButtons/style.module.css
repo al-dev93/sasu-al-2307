@@ -1,0 +1,21 @@
+.scrollButtons {
+  position: absolute;
+  width: 100%;
+  top: calc(50% - 33px);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scrollButton {
+  height: 36px;
+  width: auto;
+  padding: 12px 18.75px;
+  color: var(--dark-primary);
+  cursor: pointer;
+}
+
+.scrollButton:hover {
+  color: var(--secondary-color);
+}

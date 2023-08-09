@@ -1,6 +1,6 @@
 .slideshowDots {
   width: fit-content;
-  margin: 15px auto;
+  margin: 0 auto;
   padding: 6px 0;
   display: flex;
   gap: 7px;
@@ -13,10 +13,10 @@
   cursor: pointer;
 }
 
-.notOnScreen {
+.notActive {
   background-color: var(--decorative-light);
 }
 
-.onScreen {
+.active {
   background-color: var(--decorative-dark);
 }

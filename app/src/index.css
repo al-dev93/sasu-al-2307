@@ -39,6 +39,10 @@
   --dark-primary: #ccd6f6;
   --dark-secondary: #8892b0;
   --ligth-bg-menu: rgba(255, 255, 255, 0.93);
+  /* border */
+  --button-br: 8px;
+  --tag-br: 7px;
+  --frame-br: 10px;
 }
 
 html {
@@ -117,7 +121,7 @@ button {
   padding: 12px;
   border: 1px solid;
   border-color: var(--tertiary-color);
-  border-radius: 8px;
+  border-radius: var(--button-br);
   line-height: var(--lh-regular);
   font-weight: bold;
   background: var(--button-bg) var(--button-gradient);

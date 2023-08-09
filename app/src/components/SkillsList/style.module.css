@@ -11,4 +11,5 @@
   margin-top: 20px;
   padding: 10px 30px;
   background-color: var(--element-bg);
+  border-radius: var(--frame-br);
 }

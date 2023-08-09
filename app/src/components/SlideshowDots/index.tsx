@@ -1,22 +1,38 @@
 import React from 'react';
 import style from './style.module.css';
+import { START, State } from '../../utils/stateData';
+import { Slide } from '../../utils/slide';
 
 type SlideshowDotsProps = {
   slidesIndex: number[];
-  onScreen: number;
-  setSlide: React.Dispatch<React.SetStateAction<number>>;
+  active: number;
+  setSlide: React.Dispatch<React.SetStateAction<Slide>>;
+  setState: React.Dispatch<React.SetStateAction<State>>;
 };
 
-function SlideshowDots({ slidesIndex, onScreen, setSlide }: SlideshowDotsProps): JSX.Element {
-  const handleClick = (e: React.MouseEvent<HTMLDivElement> | undefined) => console.log(e);
+function SlideshowDots({
+  slidesIndex,
+  active,
+  setSlide,
+  setState,
+}: SlideshowDotsProps): JSX.Element {
+  const handleClick = (value: number): void => {
+    setState(START);
+    setSlide((prev) => ({
+      current: prev.new,
+      new: value,
+      loopSlide: Math.abs(value - active) === slidesIndex.length - 1,
+    }));
+  };
+
   return (
     <div className={style.slideshowDots}>
-      {slidesIndex.map((value, index) => (
+      {slidesIndex.map((value) => (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div
           key={value}
-          className={`${style.dot} ${onScreen === value ? style.onScreen : style.notOnScreen}`}
-          onClick={() => setSlide(index)}
+          className={`${style.dot} ${active === value ? style.active : style.notActive}`}
+          onClick={() => handleClick(value)}
         />
       ))}
     </div>

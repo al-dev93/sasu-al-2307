@@ -4,7 +4,7 @@ import './App.css';
 import SectionTitle from './components/SectionTitle';
 import SkillsList from './components/SkillsList';
 import skillsData from './utils/skillsData';
-import Carousel from './components/Carousel';
+import Slideshow from './components/Slideshow';
 
 function App() {
   return (
@@ -71,7 +71,7 @@ function App() {
         <section className='app-section'>
           <div className='body-section'>
             <SectionTitle title='Principales réalisations' />
-            <Carousel />
+            <Slideshow />
           </div>
           <button type='button'>Contact</button>
         </section>

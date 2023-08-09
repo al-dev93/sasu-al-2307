@@ -1,0 +1,37 @@
+.slideshow {
+  position: relative;
+  margin: 0 100px;
+  background-color: var(--element-bg);
+  border-radius: var(--frame-br);
+}
+
+.picturesScrollerWrapper {
+  position: absolute;
+  width: 100%;
+  top: 71.4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.slideshowWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.header {
+  margin: 0 0 432px;
+  padding: 15px 20px;
+}
+
+.description {
+  padding: 8px 20px 5px;
+  font-size: var(--fs-xs);
+  color: var(--tertiary-color);
+}
+
+.footer {
+  padding-bottom: 10px;
+}
