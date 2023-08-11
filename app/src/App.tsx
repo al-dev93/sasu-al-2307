@@ -5,6 +5,8 @@ import SectionTitle from './components/SectionTitle';
 import SkillsList from './components/SkillsList';
 import skillsData from './utils/skillsData';
 import Slideshow from './components/Slideshow';
+import Card from './components/Card';
+import { cardsList } from './utils/worksList';
 
 function App() {
   return (
@@ -80,6 +82,16 @@ function App() {
         <section className='app-section'>
           <div className='body-section'>
             <SectionTitle title='Autres réalisations' />
+            <div className='cards-wrapper'>
+              {cardsList.map((value, index) => (
+                <Card
+                  key={`${index + 1}`}
+                  title={value.title}
+                  description={value.description}
+                  list={value.skills}
+                />
+              ))}
+            </div>
           </div>
           <button type='button'>Contact</button>
         </section>

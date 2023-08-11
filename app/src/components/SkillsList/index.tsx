@@ -9,7 +9,7 @@ type SkillsListProps = {
 
 function SkillsList({ list, type = 'row' }: SkillsListProps): JSX.Element {
   const listStyle: string =
-    type === 'wrapp' ? `${style['skills-row']}${style['wrapp-row']}` : style[`skills-${type}`];
+    type === 'wrapp' ? `${style['skills-row']} ${style['wrapp-row']}` : style[`skills-${type}`];
 
   return (
     <ul className={listStyle}>

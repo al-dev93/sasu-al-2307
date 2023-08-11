@@ -4,13 +4,13 @@ import SlideshowDots from '../SlideshowDots';
 import SkillsList from '../SkillsList';
 import Fade from '../Fade';
 import { State, START, STOP, PENDING } from '../../utils/stateData';
-import { Slide, slidesList } from '../../utils/slide';
+import { Slide, slidesList } from '../../utils/worksList';
 import PicturesScroller from '../PicturesScroller';
 import ScrollButtons from '../ScrollButtons';
 
 const slidesIndex = [...slidesList.keys()];
 
-function Carousel(): JSX.Element {
+function Slideshow(): JSX.Element {
   const [slide, setSlide] = useState<Slide>({ current: 0, new: 0, loopSlide: false });
   const [state, setState] = useState<State>(STOP);
 
@@ -54,4 +54,4 @@ function Carousel(): JSX.Element {
   );
 }
 
-export default Carousel;
+export default Slideshow;

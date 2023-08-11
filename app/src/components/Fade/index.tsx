@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style.module.css';
 import { STOP, State } from '../../utils/stateData';
-import { Slide } from '../../utils/slide';
+import { Slide } from '../../utils/worksList';
 
 type FadeProps = {
   children: JSX.Element;

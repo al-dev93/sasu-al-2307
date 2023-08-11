@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
 import style from './style.module.css';
 import { START, State } from '../../utils/stateData';
-import { Slide, slidesList } from '../../utils/slide';
+import { Slide, slidesList } from '../../utils/worksList';
 
 type ScrollButtonsProps = {
   slide: Slide;

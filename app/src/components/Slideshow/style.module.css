@@ -2,7 +2,7 @@
   position: relative;
   margin: 0 100px;
   background-color: var(--element-bg);
-  border-radius: var(--frame-br);
+  border-radius: var(--br-md);
 }
 
 .picturesScrollerWrapper {

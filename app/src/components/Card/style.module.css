@@ -1,0 +1,39 @@
+.card {
+  margin: 0;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: var(--element-bg);
+  border-radius: var(--br-sm);
+}
+
+.cardHeader {
+  margin: 0;
+  padding: 0 10px;
+  display: flex;
+}
+
+.folderIcon {
+  width: 32px;
+  height: auto;
+  color: var(--decorative-dark);
+}
+
+.cardMain {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cardDescription {
+  flex: 1 0 130px;
+  overflow: hidden;
+  font-size: var(--fs-xs);
+  color: var(--tertiary-color);
+}
+
+.cardFooter {
+  margin: 0;
+  padding: 0;
+}
