@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import SectionTitle from './components/SectionTitle';
@@ -7,10 +7,14 @@ import skillsData from './utils/skillsData';
 import Slideshow from './components/Slideshow';
 import Card from './components/Card';
 import { cardsList } from './utils/worksList';
+import Button from './components/Button';
+import Modal from './components/Modal';
 
 function App() {
+  const [isShowModal, setIsShowModal] = useState<boolean>(false);
   return (
     <div className='App'>
+      {isShowModal && <Modal open={isShowModal} setOpen={setIsShowModal} closeOnOutsideClick />}
       <main>
         <section className='hero-section'>
           <div className='body-section'>
@@ -24,7 +28,7 @@ function App() {
               d’accessibilité.
             </p>
           </div>
-          <button type='button'>Contact</button>
+          <Button name='Contact' setOpenModal={setIsShowModal} />
         </section>
 
         {/* skills section */}
@@ -66,7 +70,7 @@ function App() {
 
             <SkillsList list={[...skillsData.script, ...skillsData.style]} type='table' />
           </div>
-          <button type='button'>Contact</button>
+          <Button name='Contact' setOpenModal={setIsShowModal} />
         </section>
 
         {/* key projects section */}
@@ -75,7 +79,7 @@ function App() {
             <SectionTitle title='Principales réalisations' />
             <Slideshow />
           </div>
-          <button type='button'>Contact</button>
+          <Button name='Contact' setOpenModal={setIsShowModal} />
         </section>
 
         {/* other projects section */}
@@ -93,7 +97,7 @@ function App() {
               ))}
             </div>
           </div>
-          <button type='button'>Contact</button>
+          <Button name='Contact' setOpenModal={setIsShowModal} />
         </section>
       </main>
     </div>
