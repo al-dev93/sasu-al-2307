@@ -28,11 +28,11 @@ function SlideshowDots({
   return (
     <div className={style.slideshowDots}>
       {slidesIndex.map((value) => (
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div
           key={value}
           className={`${style.dot} ${active === value ? style.active : style.notActive}`}
           onClick={() => handleClick(value)}
+          role='presentation'
         />
       ))}
     </div>

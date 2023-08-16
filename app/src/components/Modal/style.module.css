@@ -1,12 +1,6 @@
-.modalWrapper {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
 .modal {
   position: fixed;
   width: 500px;
-  overflow-x: hidden;
   top: 50%;
   bottom: 50%;
   padding: 0;
@@ -18,8 +12,13 @@
   background: rgba(0, 53, 84, 0.7);
 }
 
+.modalWrapper {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .modalHeader {
-  padding: 20px 20px 15px;
+  padding: 20px 20px 0px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -40,33 +39,41 @@
   font-size: var(--fs-lg);
   color: var(--quaternary-color);
 }
+
 .modalSlogan {
   font-size: var(--fs-sm);
   color: var(--decorative-light);
 }
 
+.modalInnerWrapper {
+  width: 100%;
+}
+
 .contactForm {
   margin: 0 20px;
-  padding: 0 15px;
+  padding: 15px 15px 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.label {
+.inputFormWrapper {
   width: 350px;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: 8px;
+}
+
+.inputFormWrapper.textArea {
+  width: 100%;
+}
+
+.label {
   color: var(--quaternary-color);
 }
 
-.label.textArea {
-  width: 100%;
-}
-
 .inputBox {
-  width: 100%;
   height: 42px;
   padding-left: 16px;
   line-height: var(--lh-label);
@@ -92,8 +99,6 @@
   outline: none;
 }
 
-.footer {
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
+.buttonForm {
+  align-self: center;
 }

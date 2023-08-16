@@ -1,29 +1,28 @@
-import React, { LegacyRef, forwardRef } from 'react';
-import style from './style.module.css';
+import React, { LegacyRef, MouseEventHandler, forwardRef } from 'react';
 
 type ButtonProps = {
-  name: string;
+  className?: string;
   form?: string;
-  setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  name: string;
 };
 
-const Button = forwardRef((props: ButtonProps, ref?: LegacyRef<HTMLButtonElement>): JSX.Element => {
-  const handleClick = () => props.setOpenModal && props.setOpenModal(true);
+function ButtonRef(props: ButtonProps, ref?: LegacyRef<HTMLButtonElement>): JSX.Element {
+  const { className, form, onClick, name } = props;
   return (
     <button
-      type={props.form ? 'submit' : 'button'}
-      form={props.form}
-      onClick={handleClick}
+      className={className}
+      form={form}
+      type={form ? 'submit' : 'button'}
+      onClick={onClick}
       ref={ref}
     >
-      {props.name}
+      {name}
     </button>
   );
-});
+}
 
-Button.defaultProps = {
-  form: undefined,
-  setOpenModal: undefined,
-};
-
+const Button = forwardRef(
+  ButtonRef as unknown as React.ForwardRefRenderFunction<HTMLButtonElement, ButtonProps>,
+);
 export default Button;

@@ -12,6 +12,8 @@ import Modal from './components/Modal';
 
 function App() {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
+  const handleClick = (): void => setIsShowModal(true);
+
   return (
     <div className='App'>
       {isShowModal && <Modal open={isShowModal} setOpen={setIsShowModal} closeOnOutsideClick />}
@@ -28,7 +30,7 @@ function App() {
               d’accessibilité.
             </p>
           </div>
-          <Button name='Contact' setOpenModal={setIsShowModal} />
+          <Button name='Contact' onClick={handleClick} />
         </section>
 
         {/* skills section */}
@@ -70,7 +72,7 @@ function App() {
 
             <SkillsList list={[...skillsData.script, ...skillsData.style]} type='table' />
           </div>
-          <Button name='Contact' setOpenModal={setIsShowModal} />
+          <Button name='Contact' onClick={handleClick} />
         </section>
 
         {/* key projects section */}
@@ -79,7 +81,7 @@ function App() {
             <SectionTitle title='Principales réalisations' />
             <Slideshow />
           </div>
-          <Button name='Contact' setOpenModal={setIsShowModal} />
+          <Button name='Contact' onClick={handleClick} />
         </section>
 
         {/* other projects section */}
@@ -97,7 +99,7 @@ function App() {
               ))}
             </div>
           </div>
-          <Button name='Contact' setOpenModal={setIsShowModal} />
+          <Button name='Contact' onClick={handleClick} />
         </section>
       </main>
     </div>
