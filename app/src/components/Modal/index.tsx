@@ -191,14 +191,14 @@ function Modal({ open, setOpen, closeOnOutsideClick }: ModalProps): JSX.Element 
               />
             </div>
             <div className={style.inputFormWrapper}>
-              <label htmlFor='phone' className={style.label}>
+              <label htmlFor='tel' className={style.label}>
                 <span>Téléphone</span>
               </label>
               <input
                 className={style.inputBox}
                 type='tel'
-                name='phone'
-                id='phone'
+                name='tel'
+                id='tel'
                 pattern='0[0-9] [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}'
                 placeholder='0X xx xx xx xx'
               />
