@@ -1,11 +1,13 @@
-type FormData = {
+export type InputData = {
   label: string;
   id: string;
   type?: 'text' | 'email' | 'tel';
   placeholder: string;
   pattern?: string;
-  required?: 'required';
-}[];
+  required?: boolean;
+};
+
+type FormData = InputData[];
 
 const formData: FormData = [
   {
@@ -13,7 +15,7 @@ const formData: FormData = [
     id: 'name',
     type: 'text',
     placeholder: 'prénom - nom',
-    required: 'required',
+    required: true,
   },
   {
     label: 'Entreprise',
@@ -26,7 +28,7 @@ const formData: FormData = [
     id: 'email',
     type: 'email',
     placeholder: 'adresse mail valide',
-    required: 'required',
+    required: true,
   },
   {
     label: 'Téléphone',
@@ -39,7 +41,7 @@ const formData: FormData = [
     label: 'Message',
     id: 'message',
     placeholder: 'votre message',
-    required: 'required',
+    required: true,
   },
 ];
 

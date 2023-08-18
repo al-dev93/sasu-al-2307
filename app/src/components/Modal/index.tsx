@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
 import style from './style.module.css';
 import Button from '../Button';
+import formData from '../../utils/modalFormData';
+import InputForm from '../InputForm';
 
 export type ModalProps = {
   open: boolean;
@@ -152,69 +154,19 @@ function Modal({ open, setOpen, closeOnOutsideClick }: ModalProps): JSX.Element 
             method='dialog'
             onSubmit={handleSubmit}
           >
-            <div className={style.inputFormWrapper}>
-              <label htmlFor='name' className={style.label}>
-                <span>Nom</span>
-              </label>
-              <input
-                className={style.inputBox}
-                type='text'
-                id='name'
-                name='name'
-                placeholder='prénom - nom'
-                required
+            {formData.map((value) => (
+              <InputForm
+                key={value.id}
+                className={style.inputWrapper}
+                label={value.label}
+                id={value.id}
+                type={value.type}
+                placeholder={value.placeholder}
+                pattern={value.pattern}
+                required={value.required}
+                asteriskColor='--primary-color'
               />
-            </div>
-            <div className={style.inputFormWrapper}>
-              <label htmlFor='company' className={style.label}>
-                <span>Entreprise</span>
-              </label>
-              <input
-                className={style.inputBox}
-                type='text'
-                id='company'
-                name='company'
-                placeholder="nom de l'entreprise"
-              />
-            </div>
-            <div className={style.inputFormWrapper}>
-              <label htmlFor='email' className={style.label}>
-                <span>Email</span>
-              </label>
-              <input
-                className={style.inputBox}
-                type='email'
-                id='email'
-                name='email'
-                placeholder='adresse mail'
-                required
-              />
-            </div>
-            <div className={style.inputFormWrapper}>
-              <label htmlFor='tel' className={style.label}>
-                <span>Téléphone</span>
-              </label>
-              <input
-                className={style.inputBox}
-                type='tel'
-                name='tel'
-                id='tel'
-                pattern='0[0-9] [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}'
-                placeholder='0X xx xx xx xx'
-              />
-            </div>
-            <div className={`${style.inputFormWrapper}  ${style.textArea}`}>
-              <label htmlFor='message' className={style.label}>
-                <span>Message</span>
-              </label>
-              <textarea
-                className={`${style.inputBox} ${style.textArea}`}
-                name='message'
-                id='message'
-                rows={5}
-                required
-              />
-            </div>
+            ))}
             <Button className={style.buttonForm} name='Envoyer' form='contact' ref={buttonRef} />
           </form>
         </div>
