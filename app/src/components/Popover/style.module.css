@@ -1,0 +1,19 @@
+.popoverWrapper {
+  position: absolute;
+  height: max-content;
+  max-width: calc(100% - 10px);
+  padding: 8px 12px;
+  top: 100%;
+  left: 4px;
+  background-color: var(--dark-bg-menu);
+  color: white;
+  font-size: var(--fs-xxs);
+  border-radius: 0 0 var(--br-xs) var(--br-xs);
+  box-shadow: var(--bsh-popover);
+  z-index: 100;
+}
+
+.popover {
+  display: block;
+  margin-bottom: 5px;
+}

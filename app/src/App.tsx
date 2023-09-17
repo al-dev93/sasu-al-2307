@@ -8,15 +8,30 @@ import Slideshow from './components/Slideshow';
 import Card from './components/Card';
 import { cardsList } from './utils/worksList';
 import Button from './components/Button';
-import Modal from './components/Modal';
+import FormDialog from './components/FormDialog';
+import formData from './utils/modalFormData';
 
 function App() {
-  const [isShowModal, setIsShowModal] = useState<boolean>(false);
-  const handleClick = (): void => setIsShowModal(true);
+  const [openFormDialog, setOpenFormDialog] = useState<boolean>(false);
+
+  /**
+   * @description
+   * @returns void
+   */
+  const handleClick = (): void => setOpenFormDialog(true);
 
   return (
     <div className='App'>
-      {isShowModal && <Modal open={isShowModal} setOpen={setIsShowModal} closeOnOutsideClick />}
+      <FormDialog
+        open={openFormDialog}
+        setOpen={setOpenFormDialog}
+        formData={formData}
+        idForm='contact'
+        submitButtonName='Envoyer'
+        title='Prenez Contact !'
+        subTitle='une demande, un projet...'
+        alertOnSubmit={['Votre message a été envoyé', 'Il sera traité dans les plus brefs délais']}
+      />
       <main>
         <section className='hero-section'>
           <div className='body-section'>

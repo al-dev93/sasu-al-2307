@@ -1,25 +1,36 @@
-.tagWrapper {
-  background-color: var(--primary-color);
-  border-radius: var(--br-xs);
-}
-
-.tagBody {
+.tag {
   display: flex;
   align-items: center;
+  padding: 5px 8px;
+  font-family: var(--font-accessories);
+  font-size: var(--fs-xxs);
+  font-weight: 500;
+  color: var(--rich-black);
 }
 
-.bulletedTag {
+.tag.thinned {
+  padding: 2px 0px;
+}
+
+.tag.error {
+  position: absolute;
+  line-height: var(--lh-small);
+  font-weight: 600;
+  color: var(--primary-alert-color);
+}
+
+.tag.bulleted::before {
+  content: url('../../assets/icons/arrow_right_outline_secondary_color.svg');
+  width: 10px;
+  height: 13px;
+}
+
+.tag.bulleted {
   width: 154px;
-  padding: 2px 0;
   gap: 5px;
 }
 
-.unbulletedTag {
-  padding: 5px 8px;
-}
-
-.tagName {
-  font-family: var(--font-accessories);
-  font-weight: 500;
-  color: var(--rich-black);
+.tag.filled {
+  background-color: var(--primary-color);
+  border-radius: var(--br-xs);
 }

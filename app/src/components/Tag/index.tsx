@@ -1,21 +1,22 @@
 import React from 'react';
 import style from './style.module.css';
-import bullet from '../../assets/icons/arrow_right_outline_secondary_color.svg';
 
 type TagProps = {
   tag: string;
-  bulleted?: boolean;
-  filled?: boolean;
+  type: 'row' | 'wrapp' | 'table' | 'error';
+  position?: React.CSSProperties;
 };
 
-function Tag({ tag, bulleted = false, filled = false }: TagProps): JSX.Element {
+function Tag({ tag, type, position }: TagProps): JSX.Element {
   return (
-    <div className={filled ? style.tagWrapper : undefined}>
-      <div className={`${style.tagBody} ${bulleted ? style.bulletedTag : style.unbulletedTag}`}>
-        {bulleted && <img src={bullet} alt='arrow bullet' />}
-        <span className={style.tagName}>{tag}</span>
-      </div>
-    </div>
+    <span
+      className={`${style.tag} ${type === 'row' && style.filled}
+        ${type === 'table' && `${style.thinned} ${style.bulleted}`}
+        ${type === 'error' && `${style.thinned} ${style.error}`}`}
+      style={position}
+    >
+      {tag}
+    </span>
   );
 }
 

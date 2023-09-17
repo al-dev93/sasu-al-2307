@@ -5,10 +5,11 @@ type ButtonProps = {
   form?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   name: string;
+  disabled?: boolean;
 };
 
 function ButtonRef(props: ButtonProps, ref?: LegacyRef<HTMLButtonElement>): JSX.Element {
-  const { className, form, onClick, name } = props;
+  const { className, form, onClick, name, disabled } = props;
   return (
     <button
       className={className}
@@ -16,6 +17,7 @@ function ButtonRef(props: ButtonProps, ref?: LegacyRef<HTMLButtonElement>): JSX.
       type={form ? 'submit' : 'button'}
       onClick={onClick}
       ref={ref}
+      disabled={disabled}
     >
       {name}
     </button>

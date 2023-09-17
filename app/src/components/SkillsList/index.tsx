@@ -15,7 +15,7 @@ function SkillsList({ list, type = 'row' }: SkillsListProps): JSX.Element {
     <ul className={listStyle}>
       {list.map((value, index) => (
         <li key={`${index + 1}`}>
-          <Tag tag={value} bulleted={type === 'table'} filled={type === 'row'} />
+          <Tag tag={value} type={type} />
         </li>
       ))}
     </ul>

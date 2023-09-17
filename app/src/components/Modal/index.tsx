@@ -1,31 +1,68 @@
-import React, { useEffect, useRef } from 'react';
+import React, { MouseEventHandler, useCallback, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
 import style from './style.module.css';
 import Button from '../Button';
-import formData from '../../utils/modalFormData';
-import InputForm from '../InputForm';
+import { setFocus } from '../../utils/modalFormData';
 
-export type ModalProps = {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  closeOnOutsideClick?: boolean;
+type ModalButton = {
+  name: string;
+  form?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  disable?: boolean;
 };
 
-function Modal({ open, setOpen, closeOnOutsideClick }: ModalProps): JSX.Element {
+export type ModalProps = {
+  children: React.ReactNode;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  button?: ModalButton;
+  closeIcon?: boolean;
+  title?: string;
+  subTitle?: string;
+  closeParentModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  customStyle?: 'alert';
+};
+
+function Modal({
+  children,
+  open,
+  setOpen,
+  button,
+  closeIcon,
+  title,
+  subTitle,
+  closeParentModal,
+  customStyle,
+}: ModalProps): JSX.Element {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<SVGSVGElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const firstRender = useRef<boolean>();
-  const shiftPress = useRef<boolean>(false);
+  const childrenRef = useRef<HTMLDivElement>(null);
+  const lastFormChildRef = useRef<HTMLTextAreaElement>();
+  const shiftKeyRef = useRef<boolean>(false);
 
+  const setOpenFalse = useCallback(
+    (
+      event:
+        | React.KeyboardEvent<SVGSVGElement>
+        | React.MouseEvent<SVGSVGElement>
+        | MouseEvent
+        | Event,
+    ) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setOpen(false);
+    },
+    [setOpen],
+  );
   // ** event handlers ******************************************************************
 
   /**
    * @description
    * @returns void
    */
-  const handleCloseClick = (): void => setOpen(false);
+  const handleCloseClick = (e: React.MouseEvent<SVGSVGElement>): void => setOpenFalse(e);
 
   /**
    * @description
@@ -33,7 +70,7 @@ function Modal({ open, setOpen, closeOnOutsideClick }: ModalProps): JSX.Element 
    * @returns void
    */
   const handleCloseKeyDown = (e: React.KeyboardEvent<SVGSVGElement>): void => {
-    if (e.code === 'Enter') setOpen(false);
+    if (e.code === 'Enter') setOpenFalse(e);
   };
 
   /**
@@ -42,8 +79,10 @@ function Modal({ open, setOpen, closeOnOutsideClick }: ModalProps): JSX.Element 
    * @returns void
    */
   const handleShiftKey = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-    if ((e.code === 'ShiftLeft' || e.code === 'ShiftLeft') && shiftPress.current)
-      shiftPress.current = false;
+    const shiftKeyPress = shiftKeyRef.current;
+
+    shiftKeyRef.current =
+      (e.code === 'ShiftLeft' || e.code === 'ShiftLeft') && shiftKeyPress ? false : shiftKeyPress;
   };
 
   /**
@@ -52,124 +91,99 @@ function Modal({ open, setOpen, closeOnOutsideClick }: ModalProps): JSX.Element 
    * @returns void
    */
   const handleTabIndex = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-    const buttonNode = buttonRef.current;
-    const closeNode = closeRef.current;
+    const focusElement = {
+      first: closeRef.current,
+      last: buttonRef.current?.disabled ? lastFormChildRef.current ?? null : buttonRef.current,
+    };
+    const shiftKeyPress = shiftKeyRef.current;
 
-    if (e.code === 'ShiftLeft' || e.code === 'ShiftLeft') {
-      shiftPress.current = true;
+    if (focusElement.last) {
+      shiftKeyRef.current = e.code === 'ShiftLeft' || e.code === 'ShiftLeft' ? true : shiftKeyPress;
+      if (
+        document.activeElement === focusElement[shiftKeyPress ? 'first' : 'last'] &&
+        e.code === 'Tab'
+      )
+        setFocus(e, focusElement[shiftKeyPress ? 'last' : 'first']);
+      return;
     }
-    if (document.activeElement === buttonNode && e.code === 'Tab' && !shiftPress.current) {
-      e.preventDefault();
-      e.stopPropagation();
-      closeNode?.focus();
-    }
-    if (document.activeElement === closeNode && e.code === 'Tab' && shiftPress.current) {
-      e.preventDefault();
-      e.stopPropagation();
-      buttonNode?.focus();
-    }
-    if (e.code === 'Enter' && document.activeElement !== buttonNode) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  };
-
-  /**
-   * @description
-   * @param e
-   * @returns void
-   */
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    setOpen(false);
+    if (e.code === 'Tab') setFocus(e, focusElement.first);
   };
 
   // ** useEffect ***********************************************************************
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent): void => {
-      const dialogNode = dialogRef.current;
-      if (closeOnOutsideClick && e.target === dialogNode) {
-        e.preventDefault();
-        e.stopPropagation();
-        setOpen(false);
-      }
+      if (e.target === dialogRef.current) setOpenFalse(e);
     };
     document.addEventListener('click', handleOutsideClick);
     return () => document.removeEventListener('click', handleOutsideClick);
-  }, [closeOnOutsideClick, setOpen]);
+  }, [setOpenFalse]);
 
   useEffect(() => {
     const dialogNode = dialogRef.current;
-    const closeNode = closeRef.current;
 
-    if (firstRender.current) {
-      firstRender.current = false;
-      closeNode?.focus();
+    if (open) {
+      lastFormChildRef.current =
+        childrenRef.current?.getElementsByTagName('textarea').item(0) || undefined;
+      dialogNode?.showModal();
       return;
     }
-    if (open) dialogNode?.showModal();
-    else dialogNode?.close();
-  }, [closeOnOutsideClick, open, setOpen]);
+    dialogNode?.close();
+    if (closeParentModal) closeParentModal((state) => !state);
+  }, [closeParentModal, open]);
 
   useEffect(() => {
     const dialogNode = dialogRef.current;
-    const handleCancel = (e: Event): void => {
-      e.preventDefault();
-      e.stopPropagation();
-      setOpen(false);
-    };
+    const handleCancel = (e: Event): void => setOpenFalse(e);
     dialogNode?.addEventListener('cancel', handleCancel);
     return () => dialogNode?.removeEventListener('cancel', handleCancel);
-  }, [setOpen]);
+  }, [setOpenFalse]);
 
   return (
     <dialog className={style.modal} ref={dialogRef}>
       <div
-        className={style.modalWrapper}
+        className={`${style.modalWrapper} ${customStyle && style[customStyle]}`}
         role='presentation'
-        onKeyDown={handleTabIndex}
-        onKeyUp={handleShiftKey}
+        onKeyDown={closeIcon || button ? handleTabIndex : undefined}
+        onKeyUp={closeIcon && button ? handleShiftKey : undefined}
       >
-        <header className={style.modalHeader}>
-          <FontAwesomeIcon
-            className={style.modalCloseIcon}
-            icon={icon({ name: 'close' })}
-            onClick={handleCloseClick}
-            onKeyDown={handleCloseKeyDown}
-            ref={closeRef}
-            focusable
-            tabIndex={0}
-          />
-          <div className={style.modalTitleWrapper}>
-            <h3 className={style.modalTitle}>Prenez contact</h3>
-            <p className={style.modalSlogan}>une demande... ou bien un projet ?</p>
-          </div>
-        </header>
-        <div className={style.modalInnerWrapper}>
-          <form
-            action=''
-            id='contact'
-            className={style.contactForm}
-            method='dialog'
-            onSubmit={handleSubmit}
-          >
-            {formData.map((value) => (
-              <InputForm
-                key={value.id}
-                className={style.inputWrapper}
-                label={value.label}
-                id={value.id}
-                type={value.type}
-                placeholder={value.placeholder}
-                pattern={value.pattern}
-                required={value.required}
-                asteriskColor='--primary-color'
+        {(closeIcon || title || subTitle) && (
+          <header className={style.modalHeader}>
+            {closeIcon && (
+              <FontAwesomeIcon
+                className={`${style.modalCloseIcon} ${customStyle && style[customStyle]}`}
+                icon={icon({ name: 'close' })}
+                onClick={handleCloseClick}
+                onKeyDown={handleCloseKeyDown}
+                ref={closeRef}
+                focusable
+                tabIndex={0}
               />
-            ))}
-            <Button className={style.buttonForm} name='Envoyer' form='contact' ref={buttonRef} />
-          </form>
-        </div>
+            )}
+            {(title || subTitle) && (
+              <div className={style.modalTitleWrapper}>
+                {title && <h3 className={style.modalTitle}>{title}</h3>}
+                {subTitle && <p className={style.modalSlogan}>{subTitle}</p>}
+              </div>
+            )}
+          </header>
+        )}
+        {open && (
+          <div className={style.modalInnerWrapper} ref={childrenRef}>
+            {children}
+          </div>
+        )}
+        {button && (
+          <footer className={style.modalFooter}>
+            <Button
+              className={style.buttonForm}
+              name={button.name}
+              form={button.form}
+              ref={buttonRef}
+              disabled={button.disable}
+            />
+          </footer>
+        )}
       </div>
     </dialog>
   );

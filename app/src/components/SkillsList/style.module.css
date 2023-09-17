@@ -6,7 +6,7 @@
 
 .skills-row.wrapp-row {
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 0px;
   padding: 0;
 }
 

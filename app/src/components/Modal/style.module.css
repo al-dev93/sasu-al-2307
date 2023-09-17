@@ -1,11 +1,10 @@
 .modal {
   position: fixed;
-  width: 500px;
+  width: max-content;
   top: 50%;
   bottom: 50%;
   padding: 0;
   border: none;
-  background-color: var(--white);
 }
 
 .modal::backdrop {
@@ -15,6 +14,11 @@
 .modalWrapper {
   width: 100%;
   overflow-x: hidden;
+  background-color: var(--white);
+}
+
+.modalWrapper.alert {
+  background-color: var(--quaternary-color);
 }
 
 .modalHeader {
@@ -26,6 +30,11 @@
 
 .modalCloseIcon {
   align-self: flex-end;
+  cursor: pointer;
+}
+
+.modalCloseIcon.alert {
+  color: var(--primary-color);
 }
 
 .modalTitleWrapper {
@@ -35,32 +44,32 @@
 }
 
 .modalTitle {
-  margin: 0 0 8px 30px;
+  margin-bottom: 8px;
   font-size: var(--fs-lg);
   color: var(--quaternary-color);
 }
 
 .modalSlogan {
+  margin-left: 12px;
   font-size: var(--fs-sm);
-  color: var(--decorative-light);
+  color: var(--secondary-color);
+  font-weight: 600;
 }
 
 .modalInnerWrapper {
-  width: 100%;
+  width: max-content;
 }
 
-.contactForm {
-  margin: 0 20px;
-  padding: 15px 15px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.inputWrapper {
-  width: 350px;
+.modalFooter {
+  padding-bottom: 30px;
 }
 
 .buttonForm {
-  align-self: center;
+  display: block;
+  margin: 0 auto;
+}
+
+.buttonForm:disabled {
+  opacity: 0.5;
+  border: none;
 }
