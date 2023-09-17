@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import style from './style.module.css';
-import SlideshowDots from '../SlideshowDots';
+import PicturesScroller from './PicturesScroller';
+import ScrollButtons from './ScrollButtons';
+import SlideshowDots from './SlideshowDots';
 import SkillsList from '../SkillsList';
 import Fade from '../Fade';
 import { State, START, STOP, PENDING } from '../../utils/stateData';
 import { Slide, slidesList } from '../../utils/worksList';
-import PicturesScroller from '../PicturesScroller';
-import ScrollButtons from '../ScrollButtons';
 
 const slidesIndex = [...slidesList.keys()];
 

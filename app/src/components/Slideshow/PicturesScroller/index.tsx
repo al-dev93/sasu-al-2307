@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import style from './style.module.css';
-import { Slide, slidesList } from '../../utils/worksList';
-import { START, STOP, State } from '../../utils/stateData';
+import { Slide, slidesList } from '../../../utils/worksList';
+import { START, STOP, State } from '../../../utils/stateData';
 
 type PicturesScrollerProps = {
   slide: Slide;

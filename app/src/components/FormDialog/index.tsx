@@ -8,7 +8,7 @@ import {
   checkValidityOfFormData,
   getArrayOfElement,
 } from '../../utils/modalFormData';
-import InputForm from '../InputForm';
+import InputForm from './InputForm';
 import Alert from '../Alert';
 
 type FormDialogProps = {

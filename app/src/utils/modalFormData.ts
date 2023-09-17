@@ -66,7 +66,7 @@ export function getStateIndex(state: Validity[] | undefined, id: string): number
  * @param setState
  * @param id
  * @param newValue
- * @returns Validity[]
+ * @returns void
  */
 export function updateStateValidity(
   setState: React.Dispatch<React.SetStateAction<Validity[] | undefined>> | undefined,

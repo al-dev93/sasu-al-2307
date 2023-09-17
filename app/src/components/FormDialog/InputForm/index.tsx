@@ -6,9 +6,9 @@ import {
   Validity,
   checkValidityInput,
   updateStateValidity,
-} from '../../utils/modalFormData';
-import Popover from '../Popover';
-import Tag from '../Tag';
+} from '../../../utils/modalFormData';
+import Popover from '../../Popover';
+import Tag from '../../Tag';
 
 /**
  * @description
@@ -44,6 +44,11 @@ function InputForm({
 
   inputValidity.current = inputRef.current ? checkValidityInput(inputRef.current) : undefined;
 
+  const isValid = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)): boolean => {
+    inputValidity.current = checkValidityInput(target);
+    updateStateValidity(setValidity, id, inputValidity.current);
+    return !inputValidity.current;
+  };
   /**
    * @description
    * @param event
@@ -53,14 +58,11 @@ function InputForm({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ): void => {
     const { value } = event.target;
-    const invalidInputData = checkValidityInput(event.target);
-    inputValidity.current = invalidInputData;
 
-    if (!invalidInputData)
+    if (isValid(event.target))
       setInputValue?.((state) =>
         state ? { ...state, [id]: value } : ({ [id]: value } as InputFormValue),
       );
-    updateStateValidity(setValidity, id, !invalidInputData ? undefined : invalidInputData);
   };
 
   /**

@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style.module.css';
-import { START, State } from '../../utils/stateData';
-import { Slide } from '../../utils/worksList';
+import { START, State } from '../../../utils/stateData';
+import { Slide } from '../../../utils/worksList';
 
 type SlideshowDotsProps = {
   slidesIndex: number[];

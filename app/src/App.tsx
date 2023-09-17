@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import SectionTitle from './components/SectionTitle';
+import SectionTitle from './views/components/SectionTitle';
 import SkillsList from './components/SkillsList';
 import skillsData from './utils/skillsData';
 import Slideshow from './components/Slideshow';
