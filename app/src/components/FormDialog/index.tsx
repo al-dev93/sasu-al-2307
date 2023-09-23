@@ -1,19 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './style.module.css';
 import Modal from '../Modal';
-import {
-  FormData,
-  InputFormValue,
-  Validity,
-  checkValidityOfFormData,
-  getArrayOfElement,
-} from '../../utils/modalFormData';
-import InputForm from './InputForm';
+import InputForm from './components/InputForm';
 import Alert from '../Alert';
+import { FormData, InputFormValue, SetStateBoolean, Validity } from '../../types/formTypes';
 
 type FormDialogProps = {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: SetStateBoolean;
   formData: FormData;
   idForm: string;
   submitButtonName: string;
@@ -21,6 +15,12 @@ type FormDialogProps = {
   subTitle?: string;
   alertOnSubmit: string | string[];
 };
+
+const initialValidityState = [
+  { name: 'name', valid: false, valueMissing: true },
+  { name: 'email', valid: false, valueMissing: true },
+  { name: 'message', valid: false, valueMissing: true },
+];
 
 function FormDialog({
   open,
@@ -33,10 +33,8 @@ function FormDialog({
   alertOnSubmit,
 }: FormDialogProps): JSX.Element {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [validity, setValidity] = useState<Validity[]>();
+  const [validity, setValidity] = useState<Validity[]>(initialValidityState);
   const [inputValue, setInputValue] = useState<InputFormValue>();
-
-  const formRef = useRef<HTMLFormElement>(null);
 
   /**
    * @description
@@ -56,12 +54,12 @@ function FormDialog({
   };
 
   useEffect(() => {
-    const formNode = formRef?.current;
-    if (formNode) {
-      setValidity(checkValidityOfFormData(getArrayOfElement(formNode)));
+    if (!open) {
+      setValidity(initialValidityState);
+      setInputValue(undefined);
     }
   }, [open]);
-
+  console.log(validity);
   return (
     <Modal
       open={open}
@@ -88,7 +86,6 @@ function FormDialog({
         method='dialog'
         onSubmit={handleSubmit}
         noValidate
-        ref={formRef}
       >
         {formData.map((value) => (
           <InputForm
@@ -101,6 +98,7 @@ function FormDialog({
             minLength={value.minLength}
             required={value.required}
             asteriskColor='--primary-color'
+            validity={validity}
             setValidity={setValidity}
             setInputValue={setInputValue}
           />

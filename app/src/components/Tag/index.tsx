@@ -2,7 +2,7 @@ import React from 'react';
 import style from './style.module.css';
 
 type TagProps = {
-  tag: string;
+  tag?: string;
   type: 'row' | 'wrapp' | 'table' | 'error';
   position?: React.CSSProperties;
 };

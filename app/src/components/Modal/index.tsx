@@ -1,9 +1,10 @@
 import React, { MouseEventHandler, useCallback, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
-import style from './style.module.css';
 import Button from '../Button';
+import style from './style.module.css';
 import { setFocus } from '../../utils/modalFormData';
+import { SetStateBoolean } from '../../types/formTypes';
 
 type ModalButton = {
   name: string;
@@ -15,12 +16,12 @@ type ModalButton = {
 export type ModalProps = {
   children: React.ReactNode;
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: SetStateBoolean;
   button?: ModalButton;
   closeIcon?: boolean;
   title?: string;
   subTitle?: string;
-  closeParentModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  closeParentModal?: SetStateBoolean;
   customStyle?: 'alert';
 };
 

@@ -13,19 +13,19 @@
   cursor: text;
 }
 
-.label.onInput {
+.label.isEdited {
   margin: 0 -2px -2px 0;
   border: 2px solid var(--tertiary-color);
   color: var(--tertiary-color);
 }
 
-.label:hover:not(.onInput, .focused) {
+.label:hover:not(.isEdited, :focus-within) {
   border: 1px solid var(--decorative-dark);
   color: var(--decorative-dark);
   font-weight: 500;
 }
 
-.label.focused {
+.label:focus-within {
   margin: 0 -2px -2px 0;
   border: 2px solid var(--secondary-color);
   color: var(--secondary-color);
@@ -33,7 +33,7 @@
 }
 
 .label:hover.error,
-.label.focused.error {
+.label:focus-within.error {
   color: var(--primary-alert-color);
 }
 
@@ -41,7 +41,7 @@
   border: 1px solid var(--primary-alert-color);
 }
 
-.label.focused.error {
+.label:focus-within.error {
   border: 2px solid var(--primary-alert-color);
 }
 
@@ -67,7 +67,7 @@
 }
 
 .inputBox.textArea {
-  margin: 0;
+  margin: 0 0 -2.5px;
   min-width: 366px;
   width: 476px;
   max-width: 100vw;

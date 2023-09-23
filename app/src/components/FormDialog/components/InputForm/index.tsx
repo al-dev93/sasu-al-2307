@@ -1,22 +1,26 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import style from './style.module.css';
+import Popover from '../../../Popover';
+import Tag from '../../../Tag';
 import {
+  ChangeInput,
   InputData,
-  InputFormValue,
+  SetStateInputFormValue,
+  SetStateValidity,
   Validity,
-  checkValidityInput,
-  updateStateValidity,
-} from '../../../utils/modalFormData';
-import Popover from '../../Popover';
-import Tag from '../../Tag';
+} from '../../../../types/formTypes';
+import { getErrorMessage } from '../../../../utils/modalFormData';
+import useContactForm from '../../../../hooks/useContactForm';
+import { getStateByIndex } from '../../../../utils/handleContactState';
 
 /**
  * @description
  */
 type InputFormProps = InputData & {
   asteriskColor?: string;
-  setValidity?: React.Dispatch<React.SetStateAction<Validity[] | undefined>>;
-  setInputValue?: React.Dispatch<React.SetStateAction<InputFormValue | undefined>>;
+  validity: Validity[];
+  setValidity: SetStateValidity;
+  setInputValue: SetStateInputFormValue;
 };
 
 /**
@@ -32,39 +36,25 @@ function InputForm({
   pattern,
   required,
   minLength,
+  validity,
   setValidity,
   setInputValue,
   asteriskColor,
 }: InputFormProps): JSX.Element {
   const [focused, setFocused] = useState<boolean>(false);
-
-  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
-  const inputValidity = useRef<Validity>();
+  const [input, setInput] = useState<ChangeInput>();
   const varCssColor = getComputedStyle(document.body);
 
-  inputValidity.current = inputRef.current ? checkValidityInput(inputRef.current) : undefined;
-
-  const isValid = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)): boolean => {
-    inputValidity.current = checkValidityInput(target);
-    updateStateValidity(setValidity, id, inputValidity.current);
-    return !inputValidity.current;
-  };
   /**
    * @description
    * @param event
    * @returns void
    */
-  const handleOnChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ): void => {
-    const { value } = event.target;
-
-    if (isValid(event.target))
-      setInputValue?.((state) =>
-        state ? { ...state, [id]: value } : ({ [id]: value } as InputFormValue),
-      );
-  };
-
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void =>
+    setInput({
+      target: event.target,
+      value: event.target.value,
+    });
   /**
    * @description
    * @returns void
@@ -94,15 +84,20 @@ function InputForm({
       </strong>
     );
   };
+  const { errorTag, inputBoxBorder, isValidate, popoverMessage } = useContactForm(
+    getStateByIndex(validity, id),
+    id,
+    label,
+    input as ChangeInput,
+    setValidity,
+    setInputValue,
+    getErrorMessage,
+    style,
+  );
 
   return (
     <div className={style.inputFormWrapper}>
-      <label
-        htmlFor={id}
-        className={`${style.label} ${inputValidity.current ? style.error : ''} ${
-          focused && style.focused
-        } ${!!inputRef.current?.value && !inputValidity.current && style.onInput}`}
-      >
+      <label htmlFor={id} className={inputBoxBorder}>
         <span>
           {label}
           {required && isAsterisk()}
@@ -120,7 +115,6 @@ function InputForm({
             pattern={pattern}
             placeholder={placeholder}
             required={required}
-            ref={inputRef as React.LegacyRef<HTMLInputElement>}
           />
         )) || (
           <textarea
@@ -132,17 +126,16 @@ function InputForm({
             id={id}
             placeholder={placeholder}
             required
-            ref={inputRef as React.LegacyRef<HTMLTextAreaElement>}
           />
         )}
-        {inputValidity.current?.valueMissing && (
+        {!isValidate && (
           <Tag
-            tag='remplir'
+            tag={errorTag}
             type='error'
             position={type ? { bottom: 0, right: '10px' } : { bottom: 0, left: '10px' }}
           />
         )}
-        {focused && <Popover validity={inputValidity.current} />}
+        {focused && <Popover message={popoverMessage} />}
       </label>
     </div>
   );

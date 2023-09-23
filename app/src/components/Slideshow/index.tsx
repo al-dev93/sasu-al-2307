@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import style from './style.module.css';
-import PicturesScroller from './PicturesScroller';
-import ScrollButtons from './ScrollButtons';
-import SlideshowDots from './SlideshowDots';
+import PicturesScroller from './components/PicturesScroller';
+import ScrollButtons from './components/ScrollButtons';
+import SlideshowDots from './components/SlideshowDots';
 import SkillsList from '../SkillsList';
 import Fade from '../Fade';
 import { State, START, STOP, PENDING } from '../../utils/stateData';

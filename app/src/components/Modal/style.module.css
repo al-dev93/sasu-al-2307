@@ -71,5 +71,5 @@
 
 .buttonForm:disabled {
   opacity: 0.5;
-  border: none;
+  border: transparent;
 }
