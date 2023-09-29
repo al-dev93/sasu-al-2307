@@ -55,7 +55,7 @@ export const getErrorMessage: InputErrorMessage = {
     tooShort: `comprend au moins`,
   },
   email: {
-    patternMismatch: `L'adresse n'est pas correcte`,
+    patternMismatch: `Le contenu de l'adresse n'est pas correct`,
     typeMismatch: `Entrez une adresse mail valide`,
     valueMissing: `doit être renseigné`,
   },

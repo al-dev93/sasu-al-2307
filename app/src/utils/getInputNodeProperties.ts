@@ -1,8 +1,9 @@
 import { Validity } from '../types/formTypes';
 
 function checkValidityInput(
-  inputNode: HTMLInputElement | HTMLTextAreaElement,
+  inputNode: HTMLInputElement | HTMLTextAreaElement | undefined | null,
 ): Validity | undefined {
+  if (!inputNode) return undefined;
   const { name, minLength } = inputNode;
   const { valid, valueMissing, typeMismatch, patternMismatch, tooShort } = inputNode.validity;
   return valid

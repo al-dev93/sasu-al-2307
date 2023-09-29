@@ -45,10 +45,10 @@ export type SetStateInputFormValue = React.Dispatch<
   React.SetStateAction<InputFormValue | undefined>
 >;
 
-export type ChangeInput = {
-  target: HTMLInputElement | HTMLTextAreaElement;
-  value: string;
-};
+// export type ChangeInput = {
+//   target: HTMLInputElement | HTMLTextAreaElement;
+//   value: string;
+// };
 
 export type StringObject = {
   readonly [key: string]: string;

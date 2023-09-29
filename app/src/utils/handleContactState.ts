@@ -10,10 +10,10 @@ function findStateIndex(state: Validity[], id: string, index = 0): number {
   return -1;
 }
 
-export function getStateByIndex(state: Validity[], id: string): Validity | undefined {
-  const index = findStateIndex(state, id);
-  return index > -1 ? state[index] : undefined;
-}
+// export function getStateByIndex(state: Validity[], id: string): Validity | undefined {
+//   const index = findStateIndex(state, id);
+//   return index > -1 ? state[index] : undefined;
+// }
 
 function addToState(state: Validity[], element?: Validity): Validity[] {
   return element ? [...state, element] : state;
@@ -36,8 +36,8 @@ function removeStateRecord(state: Validity[], index: number): Validity[] {
   })();
 }
 
-export function updateStateValidity(
-  setState: React.Dispatch<React.SetStateAction<Validity[]>>,
+function updateStateValidity(
+  setState: React.Dispatch<React.SetStateAction<Validity[]>> | undefined,
   id: string,
   newValue?: Validity,
 ): void {
@@ -48,3 +48,5 @@ export function updateStateValidity(
     return addToState(state, newValue);
   });
 }
+
+export default updateStateValidity;

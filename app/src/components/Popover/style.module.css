@@ -8,8 +8,28 @@
   background-color: var(--dark-bg-menu);
   color: white;
   font-size: var(--fs-xxs);
-  white-space: pre;
+  font-weight: 400;
   border-radius: 0 0 var(--br-xs) var(--br-xs);
   box-shadow: var(--bsh-popover);
   z-index: 100;
 }
+
+.errorMessage {
+  white-space: pre;
+}
+
+.autocompleteWrapper {
+  width: 100%;
+}
+
+.borderTopList {
+  display: inline-block;
+  width: 70%;
+  height: 4px;
+  margin: 5px 0;
+  border-bottom: solid 1px var(--dark-secondary);
+}
+
+/* .listAutocomplete {
+  width: 100%;
+} */

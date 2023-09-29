@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
+import React, { LegacyRef, useEffect, useRef } from 'react';
 import style from './style.module.css';
-import Popover from '../../../Popover';
-import Tag from '../../../Tag';
 import {
-  ChangeInput,
   InputData,
+  InputFormValue,
   SetStateInputFormValue,
   SetStateValidity,
-  Validity,
 } from '../../../../types/formTypes';
-import { getErrorMessage } from '../../../../utils/modalFormData';
 import useContactForm from '../../../../hooks/useContactForm';
-import { getStateByIndex } from '../../../../utils/handleContactState';
+import Popover from '../../../Popover';
+import Tag from '../../../Tag';
+import { getErrorMessage } from '../../../../utils/modalFormData';
+import updateStateValidity from '../../../../utils/handleContactState';
 
 /**
  * @description
  */
 type InputFormProps = InputData & {
   asteriskColor?: string;
-  validity: Validity[];
   setValidity: SetStateValidity;
   setInputValue: SetStateInputFormValue;
 };
@@ -36,78 +34,56 @@ function InputForm({
   pattern,
   required,
   minLength,
-  validity,
   setValidity,
   setInputValue,
   asteriskColor,
 }: InputFormProps): JSX.Element {
-  const [focused, setFocused] = useState<boolean>(false);
-  const [input, setInput] = useState<ChangeInput>();
-  const varCssColor = getComputedStyle(document.body);
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  const { isValidate, isFocused, inputBoxBorder, errorMessage, errorTagContent, error, value } =
+    useContactForm(inputRef);
+  const { message, list } = errorMessage;
+  useEffect(() => {
+    updateStateValidity(setValidity, id, error);
+  }, [error, id, setValidity]);
+
+  useEffect(() => {
+    if (value)
+      setInputValue((prev) =>
+        prev ? { ...prev, [id]: value } : ({ [id]: value } as InputFormValue),
+      );
+  }, [id, setInputValue, value]);
+
+  const varCss = getComputedStyle(document.body);
 
   /**
    * @description
    * @param event
    * @returns void
    */
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void =>
-    setInput({
-      target: event.target,
-      value: event.target.value,
-    });
-  /**
-   * @description
-   * @returns void
-   */
-  const handleOnFocus = (): void => setFocused(true);
-
-  /**
-   * @description
-   * @returns void
-   */
-  const handleOnBlur = (): void => setFocused(false);
-
-  /**
-   * @description
-   * @param
-   * @returns JSX.Element
-   */
   const isAsterisk = (): JSX.Element => {
     const asteriskStyle: React.CSSProperties = {
-      color: varCssColor.getPropertyValue(asteriskColor || ``),
+      color: varCss.getPropertyValue(asteriskColor || ``),
+      fontSize: varCss.getPropertyValue('--fs-xs'),
     };
     return (
-      <strong>
-        <span aria-label='required' style={asteriskStyle}>
-          *
-        </span>
-      </strong>
+      <span aria-label='required' style={asteriskStyle}>
+        *
+      </span>
     );
   };
-  const { errorTag, inputBoxBorder, isValidate, popoverMessage } = useContactForm(
-    getStateByIndex(validity, id),
-    id,
-    label,
-    input as ChangeInput,
-    setValidity,
-    setInputValue,
-    getErrorMessage,
-    style,
-  );
 
   return (
     <div className={style.inputFormWrapper}>
-      <label htmlFor={id} className={inputBoxBorder}>
-        <span>
-          {label}
-          {required && isAsterisk()}
-        </span>
+      <div className={inputBoxBorder(style)}>
+        <div className={style.labelContainer}>
+          <label className={style.label} htmlFor={id}>
+            {label}
+          </label>
+          <span>{required && isAsterisk()}</span>
+        </div>
         {(type && (
           <input
             className={style.inputBox}
-            onChange={handleOnChange}
-            onFocus={handleOnFocus}
-            onBlur={handleOnBlur}
             type={type}
             name={id}
             id={id}
@@ -115,28 +91,29 @@ function InputForm({
             pattern={pattern}
             placeholder={placeholder}
             required={required}
+            autoComplete='off'
+            ref={inputRef as LegacyRef<HTMLInputElement>}
           />
         )) || (
           <textarea
             className={`${style.inputBox} ${style.textArea}`}
-            onChange={handleOnChange}
-            onFocus={handleOnFocus}
-            onBlur={handleOnBlur}
             name={id}
             id={id}
             placeholder={placeholder}
             required
+            autoComplete='off'
+            ref={inputRef as LegacyRef<HTMLTextAreaElement>}
           />
         )}
         {!isValidate && (
           <Tag
-            tag={errorTag}
             type='error'
-            position={type ? { bottom: 0, right: '10px' } : { bottom: 0, left: '10px' }}
+            tag={errorTagContent}
+            position={id === 'message' ? { bottom: 0, left: '10px' } : { bottom: 0, right: '10px' }}
           />
         )}
-        {focused && <Popover message={popoverMessage} />}
-      </label>
+        {isFocused && <Popover message={message(getErrorMessage)} list={list} />}
+      </div>
     </div>
   );
 }

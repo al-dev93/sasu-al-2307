@@ -16,12 +16,6 @@ type FormDialogProps = {
   alertOnSubmit: string | string[];
 };
 
-const initialValidityState = [
-  { name: 'name', valid: false, valueMissing: true },
-  { name: 'email', valid: false, valueMissing: true },
-  { name: 'message', valid: false, valueMissing: true },
-];
-
 function FormDialog({
   open,
   setOpen,
@@ -33,7 +27,7 @@ function FormDialog({
   alertOnSubmit,
 }: FormDialogProps): JSX.Element {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [validity, setValidity] = useState<Validity[]>(initialValidityState);
+  const [validity, setValidity] = useState<Validity[]>([]);
   const [inputValue, setInputValue] = useState<InputFormValue>();
 
   /**
@@ -53,13 +47,14 @@ function FormDialog({
     }
   };
 
-  useEffect(() => {
-    if (!open) {
-      setValidity(initialValidityState);
-      setInputValue(undefined);
-    }
-  }, [open]);
+  const cleanFormStates = () => {
+    setValidity([]);
+    setInputValue(undefined);
+  };
+
+  useEffect(() => cleanFormStates(), [open]);
   console.log(validity);
+
   return (
     <Modal
       open={open}
@@ -70,7 +65,7 @@ function FormDialog({
       button={{
         name: submitButtonName,
         form: idForm,
-        disable: !!(validity?.length || validity === undefined),
+        disable: !!validity?.length || undefined,
       }}
     >
       <Alert
@@ -98,7 +93,6 @@ function FormDialog({
             minLength={value.minLength}
             required={value.required}
             asteriskColor='--primary-color'
-            validity={validity}
             setValidity={setValidity}
             setInputValue={setInputValue}
           />

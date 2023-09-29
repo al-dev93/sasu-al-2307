@@ -2,9 +2,9 @@
   position: relative;
 }
 
-.label {
+.inputContainer {
   position: relative;
-  display: inline-block;
+  width: fit-content;
   padding-top: 12px;
   color: var(--decorative-light);
   font-weight: 600;
@@ -13,45 +13,53 @@
   cursor: text;
 }
 
-.label.isEdited {
+.inputContainer.isEdited {
   margin: 0 -2px -2px 0;
   border: 2px solid var(--tertiary-color);
   color: var(--tertiary-color);
 }
 
-.label:hover:not(.isEdited, :focus-within) {
+.inputContainer:hover:not(.isEdited, :focus-within) {
   border: 1px solid var(--decorative-dark);
   color: var(--decorative-dark);
   font-weight: 500;
 }
 
-.label:focus-within {
+.inputContainer:focus-within {
   margin: 0 -2px -2px 0;
   border: 2px solid var(--secondary-color);
   color: var(--secondary-color);
   font-weight: 500;
 }
 
-.label:hover.error,
-.label:focus-within.error {
+.inputContainer:hover.error,
+.inputContainer:focus-within.error {
   color: var(--primary-alert-color);
 }
 
-.label:hover.error {
+.inputContainer:hover.error {
   border: 1px solid var(--primary-alert-color);
 }
 
-.label:focus-within.error {
+.inputContainer:focus-within.error {
   border: 2px solid var(--primary-alert-color);
 }
 
-.label > span:first-child {
+.labelContainer {
   position: absolute;
-  display: block;
+  display: flex;
   top: -12px;
   left: 10px;
-  padding: 0 2px;
   background-color: white;
+}
+
+.label {
+  display: block;
+  padding: 0 2px;
+}
+
+.labelContainer span {
+  display: block;
 }
 
 .inputBox {
