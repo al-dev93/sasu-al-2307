@@ -9,6 +9,11 @@ type AlertProps = {
   closeParentModal?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function Alert({ openAlert, setOpenAlert, message, closeParentModal }: AlertProps): JSX.Element {
   return (
     <Modal

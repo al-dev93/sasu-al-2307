@@ -7,6 +7,11 @@ type SkillsListProps = {
   type?: 'row' | 'wrapp' | 'table';
 };
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function SkillsList({ list, type = 'row' }: SkillsListProps): JSX.Element {
   const listStyle: string =
     type === 'wrapp' ? `${style['skills-row']} ${style['wrapp-row']}` : style[`skills-${type}`];

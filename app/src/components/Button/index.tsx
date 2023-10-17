@@ -8,6 +8,12 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
+/**
+ * @description
+ * @param props
+ * @param ref
+ * @returns
+ */
 function ButtonRef(props: ButtonProps, ref?: LegacyRef<HTMLButtonElement>): JSX.Element {
   const { className, form, onClick, name, disabled } = props;
   return (

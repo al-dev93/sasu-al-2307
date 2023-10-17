@@ -1,5 +1,10 @@
 import { FormData, InputErrorMessage } from '../types/formTypes';
 
+/**
+ * @description
+ * @param event
+ * @param element
+ */
 export function setFocus(
   event: React.KeyboardEvent<HTMLDivElement>,
   element: HTMLElement | SVGSVGElement | null,
@@ -55,8 +60,8 @@ export const getErrorMessage: InputErrorMessage = {
     tooShort: `comprend au moins`,
   },
   email: {
-    patternMismatch: `Le contenu de l'adresse n'est pas correct`,
-    typeMismatch: `Entrez une adresse mail valide`,
+    patternMismatch: `L'adresse n'est pas correct`,
+    // typeMismatch: `Entrez une adresse mail valide`,
     valueMissing: `doit être renseigné`,
   },
   tel: {

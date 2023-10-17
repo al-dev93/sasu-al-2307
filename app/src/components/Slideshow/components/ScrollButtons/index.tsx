@@ -11,7 +11,17 @@ type ScrollButtonsProps = {
   setState: React.Dispatch<React.SetStateAction<State>>;
 };
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function ScrollButtons({ slide, setSlide, setState }: ScrollButtonsProps): JSX.Element {
+  /**
+   * @description
+   * @param e
+   * @returns
+   */
   const handleClick = (e: React.MouseEvent<SVGSVGElement, MouseEvent>): void => {
     setState(START);
     const target = e.currentTarget.dataset.icon;

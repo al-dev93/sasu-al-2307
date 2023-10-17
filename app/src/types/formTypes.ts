@@ -3,7 +3,6 @@ export type Validity = {
   valid: boolean;
   minLength?: number;
   patternMismatch?: boolean;
-  typeMismatch?: boolean;
   valueMissing?: boolean;
   tooShort?: boolean;
 };
@@ -13,7 +12,6 @@ export type SetStateValidity = React.Dispatch<React.SetStateAction<Validity[]>>;
 type ErrorMessage = {
   patternMismatch?: string;
   tooShort?: string;
-  typeMismatch?: string;
   valueMissing?: string;
 };
 
@@ -55,3 +53,8 @@ export type StringObject = {
 };
 
 export type SetStateBoolean = React.Dispatch<React.SetStateAction<boolean>>;
+
+export const HISTORY = 100;
+export const AUTOCOMPLETE = 101;
+
+export type OverlayType = typeof HISTORY | typeof AUTOCOMPLETE;

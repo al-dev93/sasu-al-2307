@@ -1,11 +1,22 @@
 import { Validity } from '../types/formTypes';
 
+/**
+ * @description
+ * @param inputNode
+ * @returns
+ */
 function checkValidityInput(
   inputNode: HTMLInputElement | HTMLTextAreaElement | undefined | null,
 ): Validity | undefined {
   if (!inputNode) return undefined;
-  const { name, minLength } = inputNode;
-  const { valid, valueMissing, typeMismatch, patternMismatch, tooShort } = inputNode.validity;
+  const { name, minLength, value, required } = inputNode;
+  const { pattern } = inputNode as HTMLInputElement;
+
+  const valueMissing = required ? !value.length : undefined;
+  const patternMismatch = pattern ? !(value.search(pattern) > -1) : undefined;
+  const tooShort = minLength ? !(value.length >= minLength) : undefined;
+  const valid = (!valueMissing ?? true) && (!patternMismatch ?? true) && (!tooShort ?? true);
+
   return valid
     ? undefined
     : {
@@ -13,7 +24,6 @@ function checkValidityInput(
         valid,
         ...(minLength ? { minLength } : undefined),
         ...(valueMissing ? { valueMissing } : undefined),
-        ...(typeMismatch ? { typeMismatch } : undefined),
         ...(patternMismatch ? { patternMismatch } : undefined),
         ...(tooShort ? { tooShort } : undefined),
       };

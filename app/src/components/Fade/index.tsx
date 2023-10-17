@@ -10,6 +10,11 @@ type FadeProps = {
   duration?: number;
 };
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function Fade({ children, state, slide, duration = 600 }: FadeProps): JSX.Element {
   const animationDuration = slide.loopSlide ? `${duration * 1.5}ms` : `${duration}ms`;
   const className = `${state === STOP ? '' : style.fade}`;

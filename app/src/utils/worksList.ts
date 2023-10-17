@@ -29,6 +29,11 @@ export type Slide = {
   loopSlide: boolean;
 };
 
+/**
+ * @description
+ * @param slide
+ * @returns
+ */
 function extractList(slide?: 'card'): WorksList {
   return worksData
     .filter((value) => (!slide ? value.picture !== undefined : !value.picture))

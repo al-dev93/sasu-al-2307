@@ -10,6 +10,11 @@ type CardProps = {
   list: string[];
 };
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function Card({ title, description, list }: CardProps): JSX.Element {
   return (
     <article className={style.card}>

@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import checkValidityInput from '../utils/getInputNodeProperties';
-import { InputErrorMessage, StringObject, Validity } from '../types/formTypes';
+import {
+  AUTOCOMPLETE,
+  HISTORY,
+  InputErrorMessage,
+  OverlayType,
+  StringObject,
+  Validity,
+} from '../types/formTypes';
 
 type InputProperties = {
   name: string;
@@ -8,13 +15,20 @@ type InputProperties = {
   required?: boolean;
 };
 
+/**
+ * @description
+ * @param inputRef
+ * @returns
+ */
 function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>) {
   const [value, setValue] = useState<string>();
   const [error, setError] = useState<Validity | undefined>();
   const [autoComplete, setAutoComplete] = useState<string[]>();
+  const [overlayFirstItemFocus, setOverlayFirstItemFocus] = useState<boolean>();
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const firstUse = useRef<boolean>(true);
   const storageRef = useRef<boolean>(false);
+  const overlayRef = useRef<OverlayType>();
   const inputProperties = useRef<InputProperties>({
     name: '',
     label: '',
@@ -25,6 +39,10 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
   const isStored = storageRef.current;
   const { name, label } = inputProperties.current;
 
+  /**
+   * @description
+   * @returns
+   */
   const setErrorTag = (): string => {
     if (error) {
       return error.valueMissing ? 'remplir' : 'modifier';
@@ -32,6 +50,11 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
     return '';
   };
 
+  /**
+   * @description
+   * @param style
+   * @returns
+   */
   const setBorderBox = (style: StringObject): string => {
     let inputFormStyle = `${style.inputContainer}`;
     if (value && !error) inputFormStyle += ` ${style.isEdited}`;
@@ -39,6 +62,11 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
     return inputFormStyle;
   };
 
+  /**
+   * @description
+   * @param errorMessage
+   * @returns
+   */
   const setErrorMessage = (errorMessage: InputErrorMessage): string | undefined => {
     if (!error) return undefined;
     return Object.entries(errorMessage[name]).reduce((acc: string, [key, message]) => {
@@ -57,32 +85,71 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
     }, ``);
   };
 
-  const getInputStorage = useCallback((): string[] | undefined => {
-    return isStored ? JSON.parse(localStorage.getItem(name) ?? '[]') : undefined;
-  }, [isStored, name]);
-
-  const onInputEvent = useCallback((): void => {
-    if (isStored && inputNode) {
-      const storageArr: string[] = JSON.parse(localStorage.getItem(name) ?? '[]');
-      const filterStorage = storageArr.filter((storage) =>
-        storage.toUpperCase().startsWith(inputNode?.value.toUpperCase()),
-      );
-      setAutoComplete(filterStorage.length ? filterStorage : []);
+  /**
+   * @description
+   * @param newValue
+   * @returns void
+   */
+  const putAutocompleteInInput = (newValue: string): void => {
+    if (inputNode) {
+      inputNode.focus();
+      inputNode.value = newValue;
+      setValue(newValue);
+      setError(checkValidityInput(inputNode));
     }
-  }, [inputNode, isStored, name]);
+  };
 
-  const onFocusEvent = useCallback((): void => {
-    if (isFocused) {
-      setAutoComplete(getInputStorage());
-      return;
-    }
-    setAutoComplete(undefined);
-  }, [getInputStorage, isFocused]);
+  /**
+   * @description
+   */
+  const getAutocompleteInput = useCallback(
+    (filter?: boolean): string[] | undefined => {
+      const storeArray: string[] = JSON.parse(localStorage.getItem(name) ?? '[]');
 
+      if (filter) {
+        return storeArray.length && inputNode
+          ? storeArray.filter((storage) =>
+              storage.toUpperCase().startsWith(inputNode?.value.toUpperCase()),
+            )
+          : undefined;
+      }
+      return isStored ? JSON.parse(localStorage.getItem(name) ?? '[]') : undefined;
+    },
+    [inputNode, isStored, name],
+  );
+
+  /**
+   * @description
+   */
   const updateErrorState = useCallback((): void => {
     setError(checkValidityInput(inputNode));
   }, [inputNode]);
 
+  /**
+   * @description
+   */
+  const onInputEvent = useCallback((): void => {
+    updateErrorState();
+    overlayRef.current = AUTOCOMPLETE;
+    setAutoComplete(getAutocompleteInput(true));
+  }, [getAutocompleteInput, updateErrorState]);
+
+  const onKeyboardEvent = useCallback(
+    (event: KeyboardEvent): void => {
+      if (event.code === 'ArrowDown' || event.code === 'ArrowUp') {
+        if (overlayRef.current !== AUTOCOMPLETE) {
+          overlayRef.current = HISTORY;
+          setAutoComplete(getAutocompleteInput());
+        }
+        setOverlayFirstItemFocus(event.code === 'ArrowDown');
+      }
+    },
+    [getAutocompleteInput],
+  );
+
+  /**
+   * @description
+   */
   useEffect((): (() => void) | void => {
     if (firstUse.current) {
       firstUse.current = false;
@@ -96,10 +163,13 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
       };
       if (inputNode.required) updateErrorState();
 
+      /**
+       * @description
+       * @param event
+       * @returns
+       */
       const handleInputEvent = (event: Event) => {
-        setAutoComplete(undefined);
         if (event.type === 'input') {
-          updateErrorState();
           onInputEvent();
           return;
         }
@@ -107,30 +177,63 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
           setValue(inputNode.value);
           return;
         }
-        setIsFocused(event.type === 'focus');
-        onFocusEvent();
+        if (event.type === 'keydown') {
+          onKeyboardEvent(event as KeyboardEvent);
+          return;
+        }
+        if (event.type === 'focus') {
+          setAutoComplete(undefined);
+          setOverlayFirstItemFocus(undefined);
+          overlayRef.current = undefined;
+        }
       };
 
-      const handleClick = () => inputNode.focus();
+      /**
+       * @description
+       * @param event
+       * @returns
+       */
+      const handleParentInputEvent = (event: Event) => {
+        if (event.type === 'click') {
+          inputNode.focus();
+          return;
+        }
+        if (event.type === 'focusin') {
+          setIsFocused(true);
+          return;
+        }
+        if (event.type === 'focusout') setIsFocused(false);
+      };
 
-      ['blur', 'change', 'focus', 'input'].forEach((eventType) =>
+      ['change', 'focus', 'keydown', 'input'].forEach((eventType) =>
         inputNode.addEventListener(eventType, handleInputEvent),
       );
-      inputNode.parentElement?.addEventListener('click', handleClick);
+      ['click', 'focusin', 'focusout'].forEach(
+        (eventType) => inputNode.parentElement?.addEventListener(eventType, handleParentInputEvent),
+      );
       // eslint-disable-next-line consistent-return
       return () => {
-        ['blur', 'change', 'focus', 'input'].forEach((eventType) =>
+        ['change', 'focus', 'keydown', 'input'].forEach((eventType) =>
           inputNode.removeEventListener(eventType, handleInputEvent),
         );
-        inputNode.parentElement?.removeEventListener('click', handleClick);
+        ['click', 'focusin', 'focusout'].forEach(
+          (eventType) =>
+            inputNode.parentElement?.removeEventListener(eventType, handleParentInputEvent),
+        );
       };
     }
-  }, [inputNode, onFocusEvent, onInputEvent, updateErrorState]);
+  }, [inputNode, onInputEvent, onKeyboardEvent, updateErrorState]);
 
+  /**
+   * @description
+   */
   useEffect(() => {
     storageRef.current = !!localStorage.getItem(name);
   }, [name]);
 
+  /**
+   * @description
+   */
   useEffect(() => {
     if (value && !error && name !== 'message') {
       if (isStored) {
@@ -143,8 +246,6 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
     }
   }, [error, isStored, name, value]);
 
-  console.log(isStored);
-
   return {
     isValidate: !error,
     isFocused,
@@ -153,7 +254,10 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
     value,
     errorMessage: {
       message: setErrorMessage,
-      list: autoComplete || getInputStorage(),
+      list: autoComplete,
+      inputNode,
+      overlayFirstItemFocus,
+      putAutocompleteInInput,
     },
     errorTagContent: setErrorTag(),
   };

@@ -10,12 +10,21 @@ type SlideshowDotsProps = {
   setState: React.Dispatch<React.SetStateAction<State>>;
 };
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function SlideshowDots({
   slidesIndex,
   active,
   setSlide,
   setState,
 }: SlideshowDotsProps): JSX.Element {
+  /**
+   * @description
+   * @param value
+   */
   const handleClick = (value: number): void => {
     setState(START);
     setSlide((prev) => ({

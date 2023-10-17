@@ -25,6 +25,11 @@ export type ModalProps = {
   customStyle?: 'alert';
 };
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function Modal({
   children,
   open,
@@ -43,6 +48,9 @@ function Modal({
   const lastFormChildRef = useRef<HTMLTextAreaElement>();
   const shiftKeyRef = useRef<boolean>(false);
 
+  /**
+   * @description
+   */
   const setOpenFalse = useCallback(
     (
       event:
@@ -112,7 +120,14 @@ function Modal({
 
   // ** useEffect ***********************************************************************
 
+  /**
+   * @description
+   */
   useEffect(() => {
+    /**
+     * @description
+     * @param e
+     */
     const handleOutsideClick = (e: MouseEvent): void => {
       if (e.target === dialogRef.current) setOpenFalse(e);
     };
@@ -120,6 +135,9 @@ function Modal({
     return () => document.removeEventListener('click', handleOutsideClick);
   }, [setOpenFalse]);
 
+  /**
+   * @description
+   */
   useEffect(() => {
     const dialogNode = dialogRef.current;
 
@@ -133,8 +151,16 @@ function Modal({
     if (closeParentModal) closeParentModal((state) => !state);
   }, [closeParentModal, open]);
 
+  /**
+   * @description
+   */
   useEffect(() => {
     const dialogNode = dialogRef.current;
+    /**
+     * @description
+     * @param e
+     * @returns
+     */
     const handleCancel = (e: Event): void => setOpenFalse(e);
     dialogNode?.addEventListener('cancel', handleCancel);
     return () => dialogNode?.removeEventListener('cancel', handleCancel);

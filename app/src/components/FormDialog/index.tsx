@@ -16,6 +16,11 @@ type FormDialogProps = {
   alertOnSubmit: string | string[];
 };
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function FormDialog({
   open,
   setOpen,
@@ -47,13 +52,18 @@ function FormDialog({
     }
   };
 
+  /**
+   * @description
+   */
   const cleanFormStates = () => {
     setValidity([]);
     setInputValue(undefined);
   };
 
+  /**
+   * @description
+   */
   useEffect(() => cleanFormStates(), [open]);
-  console.log(validity);
 
   return (
     <Modal

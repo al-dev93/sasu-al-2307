@@ -41,11 +41,18 @@ function InputForm({
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const { isValidate, isFocused, inputBoxBorder, errorMessage, errorTagContent, error, value } =
     useContactForm(inputRef);
-  const { message, list } = errorMessage;
+  const { message, list, inputNode, overlayFirstItemFocus, putAutocompleteInInput } = errorMessage;
+
+  /**
+   * @description
+   */
   useEffect(() => {
     updateStateValidity(setValidity, id, error);
   }, [error, id, setValidity]);
 
+  /**
+   * @description
+   */
   useEffect(() => {
     if (value)
       setInputValue((prev) =>
@@ -112,7 +119,15 @@ function InputForm({
             position={id === 'message' ? { bottom: 0, left: '10px' } : { bottom: 0, right: '10px' }}
           />
         )}
-        {isFocused && <Popover message={message(getErrorMessage)} list={list} />}
+        {isFocused && (
+          <Popover
+            message={message(getErrorMessage)}
+            list={list}
+            prevFocusNode={inputNode}
+            firstItemFocused={overlayFirstItemFocus}
+            putAutocompleteInInput={putAutocompleteInInput}
+          />
+        )}
       </div>
     </div>
   );

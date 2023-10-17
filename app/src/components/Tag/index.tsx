@@ -7,6 +7,11 @@ type TagProps = {
   position?: React.CSSProperties;
 };
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function Tag({ tag, type, position }: TagProps): JSX.Element {
   return (
     <span

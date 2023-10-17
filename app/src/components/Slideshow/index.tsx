@@ -10,10 +10,17 @@ import { Slide, slidesList } from '../../utils/worksList';
 
 const slidesIndex = [...slidesList.keys()];
 
+/**
+ * @description
+ * @returns
+ */
 function Slideshow(): JSX.Element {
   const [slide, setSlide] = useState<Slide>({ current: 0, new: 0, loopSlide: false });
   const [state, setState] = useState<State>(STOP);
 
+  /**
+   * @description
+   */
   useEffect(() => {
     let timer: string | number | NodeJS.Timeout | undefined;
     if (state === START) {

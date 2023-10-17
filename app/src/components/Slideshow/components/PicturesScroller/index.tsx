@@ -17,6 +17,11 @@ type SlideStyle =
     }
   | undefined;
 
+/**
+ * @description
+ * @param param0
+ * @returns
+ */
 function PicturesScroller({
   slide,
   setSlide,
@@ -25,6 +30,9 @@ function PicturesScroller({
 }: PicturesScrollerProps): JSX.Element {
   const slideEffectStyle: React.MutableRefObject<SlideStyle> = useRef();
 
+  /**
+   * @description
+   */
   useEffect(() => {
     if (state === STOP && slide.loopSlide) {
       setSlide((prev) => ({ ...prev, loopOffset: false }));
