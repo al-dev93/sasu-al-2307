@@ -1,4 +1,6 @@
 import React, { LegacyRef, useEffect, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
 import style from './style.module.css';
 import {
   InputData,
@@ -11,12 +13,12 @@ import Popover from '../../../Popover';
 import Tag from '../../../Tag';
 import { getErrorMessage } from '../../../../utils/modalFormData';
 import updateStateValidity from '../../../../utils/handleContactState';
+import Tooltip from '../../../Tooltip';
 
 /**
  * @description
  */
 type InputFormProps = InputData & {
-  asteriskColor?: string;
   setValidity: SetStateValidity;
   setInputValue: SetStateInputFormValue;
 };
@@ -34,9 +36,9 @@ function InputForm({
   pattern,
   required,
   minLength,
+  tooltip,
   setValidity,
   setInputValue,
-  asteriskColor,
 }: InputFormProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const { isValidate, isFocused, inputBoxBorder, errorMessage, errorTagContent, error, value } =
@@ -60,25 +62,6 @@ function InputForm({
       );
   }, [id, setInputValue, value]);
 
-  const varCss = getComputedStyle(document.body);
-
-  /**
-   * @description
-   * @param event
-   * @returns void
-   */
-  const isAsterisk = (): JSX.Element => {
-    const asteriskStyle: React.CSSProperties = {
-      color: varCss.getPropertyValue(asteriskColor || ``),
-      fontSize: varCss.getPropertyValue('--fs-xs'),
-    };
-    return (
-      <span aria-label='required' style={asteriskStyle}>
-        *
-      </span>
-    );
-  };
-
   return (
     <div className={style.inputFormWrapper}>
       <div className={inputBoxBorder(style)}>
@@ -86,7 +69,11 @@ function InputForm({
           <label className={style.label} htmlFor={id}>
             {label}
           </label>
-          <span>{required && isAsterisk()}</span>
+          {required && (
+            <Tooltip content={tooltip as JSX.Element | string} direction='right'>
+              <FontAwesomeIcon className={style.markInfo} icon={icon({ name: 'info' })} />
+            </Tooltip>
+          )}
         </div>
         {(type && (
           <input

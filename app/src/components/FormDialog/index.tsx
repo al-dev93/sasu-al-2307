@@ -102,7 +102,7 @@ function FormDialog({
             pattern={value.pattern}
             minLength={value.minLength}
             required={value.required}
-            asteriskColor='--primary-color'
+            tooltip={value.tooltip}
             setValidity={setValidity}
             setInputValue={setInputValue}
           />

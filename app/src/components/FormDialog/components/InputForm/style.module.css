@@ -55,11 +55,13 @@
 
 .label {
   display: block;
-  padding: 0 2px;
+  padding: 0 4px 0 2px;
 }
 
-.labelContainer span {
-  display: block;
+.markInfo {
+  vertical-align: top;
+  font-size: 11px;
+  padding-right: 4px;
 }
 
 .inputBox {

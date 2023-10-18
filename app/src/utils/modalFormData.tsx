@@ -1,3 +1,4 @@
+import React from 'react';
 import { FormData, InputErrorMessage } from '../types/formTypes';
 
 /**
@@ -23,6 +24,14 @@ const formData: FormData = [
     pattern: '^[a-zA-ZÀ-ú\\-\\s]*',
     required: true,
     minLength: 4,
+    tooltip: (
+      <p>
+        information requise
+        <br />
+        <br />
+        lettres, espace, tiret admis
+      </p>
+    ),
   },
   {
     label: 'Entreprise',
@@ -37,6 +46,14 @@ const formData: FormData = [
     placeholder: 'adresse mail valide',
     pattern: '^[a-z0-9._\\-]+@[a-z0-9._\\-]{2,}[.][a-z]{2,4}$',
     required: true,
+    tooltip: (
+      <p>
+        information requise
+        <br />
+        <br />
+        adresse mail valide
+      </p>
+    ),
   },
   {
     label: 'Téléphone',
@@ -50,6 +67,14 @@ const formData: FormData = [
     id: 'message',
     placeholder: 'votre message',
     required: true,
+    tooltip: (
+      <p>
+        message requis
+        <br />
+        <br />
+        caractères alphanumériques
+      </p>
+    ),
   },
 ];
 
@@ -61,7 +86,6 @@ export const getErrorMessage: InputErrorMessage = {
   },
   email: {
     patternMismatch: `L'adresse n'est pas correct`,
-    // typeMismatch: `Entrez une adresse mail valide`,
     valueMissing: `doit être renseigné`,
   },
   tel: {

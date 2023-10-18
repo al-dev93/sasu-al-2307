@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type Validity = {
   name: string;
   valid: boolean;
@@ -27,6 +29,7 @@ export type InputData = {
   pattern?: string;
   required?: boolean;
   minLength?: number;
+  tooltip?: JSX.Element | string;
 };
 
 export type FormData = InputData[];
