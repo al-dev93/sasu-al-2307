@@ -21,7 +21,7 @@ const formData: FormData = [
     id: 'name',
     type: 'text',
     placeholder: 'prénom - nom',
-    pattern: '^[a-zA-ZÀ-ú\\-\\s]*',
+    pattern: '^[a-zA-ZÀ-ú\\-\\s]+$',
     required: true,
     minLength: 4,
     tooltip: (
@@ -81,8 +81,8 @@ const formData: FormData = [
 export const getErrorMessage: InputErrorMessage = {
   name: {
     patternMismatch: `accepte les caractères alphabétiques\nminuscules, majuscules, accentués\nl'espace ou le tiret`,
-    valueMissing: `doit être renseigné`,
     tooShort: `comprend au moins`,
+    valueMissing: `doit être renseigné`,
   },
   email: {
     patternMismatch: `L'adresse n'est pas correct`,

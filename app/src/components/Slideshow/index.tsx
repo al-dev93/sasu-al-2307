@@ -22,7 +22,7 @@ function Slideshow(): JSX.Element {
    * @description
    */
   useEffect(() => {
-    let timer: string | number | NodeJS.Timeout | undefined;
+    let timer: NodeJS.Timeout;
     if (state === START) {
       timer = setTimeout(() => setState(PENDING), 300);
     }
@@ -36,7 +36,7 @@ function Slideshow(): JSX.Element {
     <article className={style.slideshow}>
       <div className={style.picturesScrollerWrapper}>
         <ScrollButtons slide={slide} setSlide={setSlide} setState={setState} />
-        <PicturesScroller slide={slide} setSlide={setSlide} state={state} />
+        <PicturesScroller slide={slide} state={state} />
         <SlideshowDots
           slidesIndex={slidesIndex}
           active={slide.new}

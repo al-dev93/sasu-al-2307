@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import style from './style.module.css';
 
 type PopoverProps = {
-  message?: string;
-  list?: string[];
+  errorMessage?: string;
+  fillList?: string[];
   firstItemFocused?: boolean;
   prevFocusNode?: HTMLInputElement | HTMLTextAreaElement | null;
   putAutocompleteInInput: (newValue: string) => void;
@@ -15,8 +15,8 @@ type PopoverProps = {
  * @returns JSX Element
  */
 function Popover({
-  message,
-  list,
+  errorMessage,
+  fillList,
   firstItemFocused,
   prevFocusNode,
   putAutocompleteInInput,
@@ -32,13 +32,13 @@ function Popover({
    * @returns
    */
   const setActiveItem = (count: boolean) => {
-    if (list && activeItem.current > 0 && activeItem.current < list.length - 1)
+    if (fillList && activeItem.current > 0 && activeItem.current < fillList.length - 1)
       activeItem.current += count ? 1 : -1;
-    else if (list && activeItem.current === 0)
-      activeItem.current = count ? activeItem.current + 1 : list.length - 1;
-    else if (list && activeItem.current === list.length - 1)
+    else if (fillList && activeItem.current === 0)
+      activeItem.current = count ? activeItem.current + 1 : fillList.length - 1;
+    else if (fillList && activeItem.current === fillList.length - 1)
       activeItem.current = count ? 0 : activeItem.current - 1;
-    return list && list?.length > 1
+    return fillList && fillList?.length > 1
       ? ulNode?.children.item(activeItem.current)
       : ulNode?.children.item(0);
   };
@@ -87,13 +87,13 @@ function Popover({
   }, [firstItemFocused, ulNode]);
 
   return (
-    ((message?.length || list) && (
+    ((errorMessage || !!fillList?.length) && (
       <div className={style.popoverWrapper}>
-        {message?.length && <p className={style.errorMessage}>{message}</p>}
-        <div className={`${style.autocompleteWrapper} ${!list ? style.disable : ''}`}>
+        {errorMessage && <p className={style.errorMessage}>{errorMessage}</p>}
+        <div className={`${style.autocompleteWrapper} ${!fillList ? style.disable : ''}`}>
           <span className={style.borderTopList} />
           <ul className={style.listAutocomplete} ref={ulRef}>
-            {list?.map((value, index) => (
+            {fillList?.map((value, index) => (
               <li
                 key={`${value}${index + 1}`}
                 className={style.popoverItem}

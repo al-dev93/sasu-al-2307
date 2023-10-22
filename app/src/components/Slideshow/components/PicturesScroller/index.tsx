@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import style from './style.module.css';
 import { Slide, slidesList } from '../../../../utils/worksList';
-import { START, STOP, State } from '../../../../utils/stateData';
+import { STOP, State } from '../../../../utils/stateData';
 
 type PicturesScrollerProps = {
   slide: Slide;
-  setSlide: React.Dispatch<React.SetStateAction<Slide>>;
   duration?: number;
   state: State;
 };
@@ -22,50 +21,52 @@ type SlideStyle =
  * @param param0
  * @returns
  */
-function PicturesScroller({
-  slide,
-  setSlide,
-  state,
-  duration = 600,
-}: PicturesScrollerProps): JSX.Element {
-  const slideEffectStyle: React.MutableRefObject<SlideStyle> = useRef();
+function PicturesScroller({ slide, state, duration = 600 }: PicturesScrollerProps): JSX.Element {
+  const intitialSlideStyle = {
+    transform: `translateX(-100%)`,
+    transition: `none`,
+  };
+  const slideEffectStyle = useRef<SlideStyle>(intitialSlideStyle);
 
   /**
    * @description
    */
   useEffect(() => {
-    if (state === STOP && slide.loopSlide) {
-      setSlide((prev) => ({ ...prev, loopOffset: false }));
-      return;
-    }
-    if (state === START && slide.loopSlide) {
+    if (slide.loopSlide && state === STOP)
       slideEffectStyle.current = {
-        transform: `translateX(${-slide.new * 100}%)`,
-        transition: `cubic-bezier(1,0,0,1) ${duration * 1.5}ms`,
+        transform: `translateX(${-(slide.new + 1) * 100}%)`,
+        transition: 'none',
       };
-      return;
-    }
+  }, [slide, state]);
+  /**
+   * @description
+   */
+  useEffect(() => {
+    const offsetSlide = () => {
+      if (slide.new === 0 && slide.loopSlide) return -(slidesList.length + 1);
+      if (slide.new === slidesList.length - 1 && slide.loopSlide) return slidesList.length - 1;
+      return -1;
+    };
     slideEffectStyle.current = {
-      transform: `translateX(${-slide.new * 100}%)`,
+      transform: `translateX(${(-slide.new + offsetSlide()) * 100}%)`,
       transition: `ease ${duration}ms`,
     };
-  }, [state, slide.loopSlide, slide.new, duration, setSlide]);
+  }, [duration, slide]);
 
   return (
     <div className={style.picturesScroller}>
       <div className={style.picturesToScroll} style={slideEffectStyle.current}>
-        {slidesList.map((value, index, array) => (
-          <div
-            key={`${index + 1}`}
-            className={
-              index > 0 && index < array.length - 1 && slide.loopSlide
-                ? `${style.slide} ${style.loopSlide}`
-                : style.slide
-            }
-          >
+        <div className={style.slide}>
+          <img className={style.picture} src={slidesList[slidesList.length - 1].picture} alt='' />
+        </div>
+        {slidesList.map((value, index) => (
+          <div key={`${index + 1}`} className={style.slide}>
             <img className={style.picture} src={value.picture} alt='' />
           </div>
         ))}
+        <div className={style.slide}>
+          <img className={style.picture} src={slidesList[0].picture} alt='' />
+        </div>
       </div>
     </div>
   );

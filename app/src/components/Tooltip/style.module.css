@@ -2,7 +2,7 @@
 .tooltipWrapper {
   display: inline-block;
   position: relative;
-  cursor: pointer;
+  cursor: default;
 }
 
 /* Absolute positioning */

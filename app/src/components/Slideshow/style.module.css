@@ -1,6 +1,6 @@
 .slideshow {
   position: relative;
-  margin: 0 100px;
+  /* margin: 0 0; */
   background-color: var(--element-bg);
   border-radius: var(--br-md);
 }
@@ -22,7 +22,7 @@
 }
 
 .header {
-  margin: 0 0 432px;
+  margin: 0 0 543px;
   padding: 15px 20px;
 }
 

@@ -9,12 +9,6 @@ import {
   Validity,
 } from '../types/formTypes';
 
-type InputProperties = {
-  name: string;
-  label: string;
-  required?: boolean;
-};
-
 /**
  * @description
  * @param inputRef
@@ -26,19 +20,13 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
   const [autoComplete, setAutoComplete] = useState<string[]>();
   const [overlayFirstItemFocus, setOverlayFirstItemFocus] = useState<boolean>();
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const firstUse = useRef<boolean>(true);
   const storageRef = useRef<boolean>(false);
   const overlayRef = useRef<OverlayType>();
-  const inputProperties = useRef<InputProperties>({
-    name: '',
-    label: '',
-    required: undefined,
-  });
 
   const inputNode = inputRef.current;
   const isStored = storageRef.current;
-  const { name, label } = inputProperties.current;
-
+  const { name, required } = inputNode || { name: '', required: undefined };
+  const label = inputNode?.labels?.[0].textContent || '';
   /**
    * @description
    * @returns
@@ -151,18 +139,7 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
    * @description
    */
   useEffect((): (() => void) | void => {
-    if (firstUse.current) {
-      firstUse.current = false;
-      return;
-    }
     if (inputNode) {
-      inputProperties.current = {
-        name: inputNode.name,
-        label: inputNode.parentElement?.firstChild?.firstChild?.textContent ?? '',
-        required: inputNode.required,
-      };
-      if (inputNode.required) updateErrorState();
-
       /**
        * @description
        * @param event
@@ -174,7 +151,7 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
           return;
         }
         if (event.type === 'change') {
-          setValue(inputNode.value);
+          setValue(error ? undefined : inputNode.value);
           return;
         }
         if (event.type === 'keydown') {
@@ -187,7 +164,6 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
           overlayRef.current = undefined;
         }
       };
-
       /**
        * @description
        * @param event
@@ -211,7 +187,6 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
       ['click', 'focusin', 'focusout'].forEach(
         (eventType) => inputNode.parentElement?.addEventListener(eventType, handleParentInputEvent),
       );
-      // eslint-disable-next-line consistent-return
       return () => {
         ['change', 'focus', 'keydown', 'input'].forEach((eventType) =>
           inputNode.removeEventListener(eventType, handleInputEvent),
@@ -222,7 +197,15 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
         );
       };
     }
-  }, [inputNode, onInputEvent, onKeyboardEvent, updateErrorState]);
+    return undefined;
+  }, [error, inputNode, onInputEvent, onKeyboardEvent]);
+
+  /**
+   * @description
+   */
+  useEffect(() => {
+    if (required) updateErrorState();
+  }, [required, updateErrorState]);
 
   /**
    * @description
@@ -235,31 +218,27 @@ function useContactForm(inputRef: React.RefObject<HTMLInputElement | HTMLTextAre
    * @description
    */
   useEffect(() => {
-    if (value && !error && name !== 'message') {
-      if (isStored) {
-        const storageSet = new Set(JSON.parse(localStorage.getItem(name) ?? '[]')).add(value);
-        localStorage.setItem(name, JSON.stringify([...storageSet].sort()));
-        return;
-      }
-      localStorage.setItem(name, JSON.stringify([value]));
-      storageRef.current = true;
+    if (!value || error || name === 'message') return;
+    if (isStored) {
+      const storageSet = new Set(JSON.parse(localStorage.getItem(name) ?? '[]')).add(value);
+      localStorage.setItem(name, JSON.stringify([...storageSet].sort()));
+      return;
     }
+    localStorage.setItem(name, JSON.stringify([value]));
+    storageRef.current = true;
   }, [error, isStored, name, value]);
 
   return {
-    isValidate: !error,
-    isFocused,
-    inputBoxBorder: setBorderBox,
     error,
+    isFocused,
+    setBorderBox,
+    setErrorTag,
     value,
-    errorMessage: {
-      message: setErrorMessage,
-      list: autoComplete,
-      inputNode,
-      overlayFirstItemFocus,
-      putAutocompleteInInput,
-    },
-    errorTagContent: setErrorTag(),
+    autoComplete,
+    inputNode,
+    overlayFirstItemFocus,
+    putAutocompleteInInput,
+    setErrorMessage,
   };
 }
 

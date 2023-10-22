@@ -13,7 +13,7 @@ function checkValidityInput(
   const { pattern } = inputNode as HTMLInputElement;
 
   const valueMissing = required ? !value.length : undefined;
-  const patternMismatch = pattern ? !(value.search(pattern) > -1) : undefined;
+  const patternMismatch = pattern ? !new RegExp(pattern).test(value) : undefined;
   const tooShort = minLength ? !(value.length >= minLength) : undefined;
   const valid = (!valueMissing ?? true) && (!patternMismatch ?? true) && (!tooShort ?? true);
 
@@ -22,7 +22,7 @@ function checkValidityInput(
     : {
         name,
         valid,
-        ...(minLength ? { minLength } : undefined),
+        ...{ minLength },
         ...(valueMissing ? { valueMissing } : undefined),
         ...(patternMismatch ? { patternMismatch } : undefined),
         ...(tooShort ? { tooShort } : undefined),

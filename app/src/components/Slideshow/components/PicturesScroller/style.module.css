@@ -1,6 +1,6 @@
 .picturesScroller {
   margin: 0 auto;
-  width: 600px;
+  width: 800px;
   overflow: hidden;
 }
 
@@ -10,8 +10,8 @@
 }
 
 .slide {
-  flex: 1 0 600px;
-  height: 378px;
+  flex: 1 0 800px;
+  height: 504px;
 }
 
 .slide.loopSlide {

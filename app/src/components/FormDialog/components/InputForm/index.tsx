@@ -41,9 +41,18 @@ function InputForm({
   setInputValue,
 }: InputFormProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
-  const { isValidate, isFocused, inputBoxBorder, errorMessage, errorTagContent, error, value } =
-    useContactForm(inputRef);
-  const { message, list, inputNode, overlayFirstItemFocus, putAutocompleteInInput } = errorMessage;
+  const {
+    error,
+    isFocused,
+    setBorderBox,
+    setErrorTag,
+    value,
+    setErrorMessage,
+    autoComplete,
+    inputNode,
+    overlayFirstItemFocus,
+    putAutocompleteInInput,
+  } = useContactForm(inputRef);
 
   /**
    * @description
@@ -64,7 +73,7 @@ function InputForm({
 
   return (
     <div className={style.inputFormWrapper}>
-      <div className={inputBoxBorder(style)}>
+      <div className={setBorderBox(style)}>
         <div className={style.labelContainer}>
           <label className={style.label} htmlFor={id}>
             {label}
@@ -99,17 +108,17 @@ function InputForm({
             ref={inputRef as LegacyRef<HTMLTextAreaElement>}
           />
         )}
-        {!isValidate && (
+        {error && (
           <Tag
             type='error'
-            tag={errorTagContent}
+            tag={setErrorTag()}
             position={id === 'message' ? { bottom: 0, left: '10px' } : { bottom: 0, right: '10px' }}
           />
         )}
         {isFocused && (
           <Popover
-            message={message(getErrorMessage)}
-            list={list}
+            errorMessage={setErrorMessage(getErrorMessage)}
+            fillList={autoComplete}
             prevFocusNode={inputNode}
             firstItemFocused={overlayFirstItemFocus}
             putAutocompleteInInput={putAutocompleteInInput}
